@@ -22,7 +22,7 @@ public class ClassesBuilder {
 			}
 			builder.append("class ").append(clazz.getSimpleName()).append(" ");
 			
-			if (classNames.contains(clazz.getSuperclass().getName())) {
+			if (clazz.getSuperclass() != null && classNames.contains(clazz.getSuperclass().getName())) {
 				builder.append("extends ").append(clazz.getSuperclass().getSimpleName());
 			}
 			

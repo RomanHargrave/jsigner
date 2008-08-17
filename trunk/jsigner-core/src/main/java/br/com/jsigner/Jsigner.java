@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -27,26 +28,26 @@ import br.com.jsigner.scanner.JarScanner;
 
 public class Jsigner {
 
-	public static void design(File f) throws MalformedURLException {
+	public static void design(File f, File outputFolder)
+			throws MalformedURLException {
 		URL[] urls = generateURLs(f);
-		
+
 		AnnotationDB db = new AnnotationDB();
 		try {
 			db.setScanClassAnnotations(true);
 			db.setScanFieldAnnotations(false);
 			db.setScanMethodAnnotations(false);
 			db.setScanParameterAnnotations(false);
-			
+
 			db.scanArchives(urls);
 			Set<String> classes = db.getAnnotationIndex().get(
 					Domain.class.getName());
-			System.out.println(classes);
 
 			List<Class<?>> diagramClasses = new ArrayList<Class<?>>();
 			Iterator<String> iterator = classes.iterator();
 			while (iterator.hasNext()) {
 				String nextClazz = iterator.next();
-				System.out.println(nextClazz);
+				System.out.println("reading diagram class: " + nextClazz);
 				URLClassLoader classLoader = URLClassLoader.newInstance(urls,
 						Thread.currentThread().getContextClassLoader());
 				Class<?> clazz = classLoader.loadClass(nextClazz);
@@ -56,9 +57,10 @@ public class Jsigner {
 			DiagramBuilder builder = new DiagramBuilder();
 			builder.build(diagramClasses);
 
-			ClassDiagram classDiagram = builder.getClassDiagram("store");
-
-			buildImage(classDiagram);
+			Collection<ClassDiagram> diagrams = builder.getDiagrams();
+			for (ClassDiagram classDiagram : diagrams) {
+				buildImage(classDiagram, outputFolder);
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -71,7 +73,7 @@ public class Jsigner {
 		JarScanner scanner = new JarScanner();
 		Set<File> jars = scanner.scan(f);
 		removeDuplicatedJars(jars);
-		
+
 		URL[] urls = new URL[jars.size()];
 		int count = 0;
 		for (File file : jars) {
@@ -93,7 +95,7 @@ public class Jsigner {
 		}
 	}
 
-	private static void buildImage(ClassDiagram diagram) {
+	private static void buildImage(ClassDiagram diagram, File outputFolder) {
 		StyleLoader stl = new StyleLoader();
 		stl.load("cfg/uml:cfg", "uml", UMLMetaType.class);
 
@@ -101,22 +103,17 @@ public class Jsigner {
 
 		try {
 			String diagramCode = diagram.generateDiagramCode();
-			System.out.println(diagramCode);
 			BufferedImage image = translator.translate(diagramCode);
-			// writing the resulting image to disk as PNG file
-			File file = File.createTempFile(diagram.getName(), ".png");
-			System.out.println(file.getAbsolutePath());
+
+			String classDiagramPath = outputFolder.getAbsolutePath()
+					+ File.separator + diagram.getName() + "ClassDiagram.png";
+			File file = new File(classDiagramPath);
+			System.out.println(classDiagramPath);
 			ImageIO.write(image, "png", file);
 		} catch (RecognitionException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-	}
-
-	public static void main(String[] args) throws MalformedURLException {
-		File file = new File(
-				"/home/rafael/desenvolvimento/projetos/jeestore/implementation/ecommerce-ear/target");
-		Jsigner.design(file);
 	}
 }

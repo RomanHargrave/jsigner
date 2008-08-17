@@ -67,7 +67,6 @@ public class RelationshipsBuilder {
 
 				builder.append("(").append(fieldName).append("); ");
 			}
-
 		}
 		return builder.toString();
 	}
@@ -102,7 +101,6 @@ public class RelationshipsBuilder {
 		} catch (SecurityException e) {
 			throw new RuntimeException(e);
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
 			return Cardinality.OneToOne;
 		}
 	}

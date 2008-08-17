@@ -20,7 +20,6 @@ public class ClassBuilderTest {
 		diagramClasses.add(RelationshipBuilderTest.Mirror.class);
 		
 		String code = ClassesBuilder.generateClassesCode(diagramClasses);
-		System.out.println(code);
 	}
 	
 	

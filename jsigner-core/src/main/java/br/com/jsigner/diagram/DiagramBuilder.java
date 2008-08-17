@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import br.com.agile.jsigner.Domain;
+import br.com.agile.jsigner.annotations.Domain;
 
 public class DiagramBuilder {
 

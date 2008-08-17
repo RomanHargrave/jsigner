@@ -1,5 +1,6 @@
 package br.com.jsigner.diagram;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,20 +12,21 @@ public class DiagramBuilder {
 
 	public void build(List<Class<?>> classes) {
 		for (Class<?> clazz : classes) {
-			String diagramName = clazz.getAnnotation(Domain.class).value();
-			ClassDiagram classDiagram = diagrams.get(diagramName);
-			if (classDiagram == null) {
-				classDiagram = new ClassDiagram(diagramName);
+			String[] diagramNames = clazz.getAnnotation(Domain.class).value();
+
+			for (String diagramName : diagramNames) {
+				ClassDiagram classDiagram = diagrams.get(diagramName);
+				if (classDiagram == null) {
+					classDiagram = new ClassDiagram(diagramName);
+				}
+				classDiagram.addClass(clazz);
+				diagrams.put(classDiagram.getName(), classDiagram);
 			}
-			classDiagram.addClass(clazz);
-			diagrams.put(classDiagram.getName(), classDiagram);
 		}
 	}
-	
-	public ClassDiagram getClassDiagram(String name) { 
-		return diagrams.get(name);
+
+	public Collection<ClassDiagram> getDiagrams() {
+		return diagrams.values();
 	}
-	
-	
-	
+
 }

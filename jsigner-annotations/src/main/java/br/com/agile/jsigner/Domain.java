@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value=ElementType.TYPE)
 public @interface Domain {
-	public String value();
+	public String[] value();
 }

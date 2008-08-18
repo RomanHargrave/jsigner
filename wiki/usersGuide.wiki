@@ -2,12 +2,19 @@
 
 = Introduction =
 
-Add your content here.
+Automating the class diagrams generation is quite simple, you just use the br.com.agile.jsigner.annotations.Domain annotation on the classes that you want to be in the diagram, specifying the diagram name (or names, if the class will appear in multiple diagrams). 
 
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Add the following dependency in you project pom.xml for importing the @Domain annotation.
+
+{{{
+<dependency>
+  <groupId>br.com.jsigner</groupId>
+  <artifactId>jsigner-annotations</artifactId>
+  <version>1.0</version>	
+</dependency>
+}}}
+
+

@@ -1,4 +1,4 @@
-package br.com.agile.jsigner;
+package br.com.agile.jsigner.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

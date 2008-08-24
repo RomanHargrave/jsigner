@@ -18,7 +18,7 @@ Three steps are required:
   You can configure the repository on the general settings.xml or on the pom.xml of your project.
 
   The url for the repository is: 
-   *http://jsigner.googlecode.com/svn/maven2/repository/*
+   * http://jsigner.googlecode.com/svn/maven2/repository/*
 
    ====pom.xml configuration:====
 

@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import br.com.jsigner.diagram.ClassesBuilder;
-
 public class ClassBuilderTest {
 
 	@Test

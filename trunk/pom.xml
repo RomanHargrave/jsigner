@@ -30,6 +30,21 @@
 		</dependency>
 	</dependencies>
 
+	<repositories>
+		<repository>
+            <id>jsigner</id>
+            <name>JSIGNER MAVEN2 REPOSITORY</name>
+            <url>http://code.google.com/p/jsigner/source/browse/trunk/maven2/repository</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+		</repository>
+	</repositories>
+
+
 
 	<build>
 		<plugins>
@@ -42,6 +57,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		
 	</build>
 </project>
 

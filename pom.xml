@@ -34,7 +34,7 @@
 		<repository>
             <id>jsigner</id>
             <name>JSIGNER MAVEN2 REPOSITORY</name>
-            <url>http://code.google.com/p/jsigner/source/browse/trunk/maven2/repository</url>
+            <url>http://jsigner.googlecode.com/svn/maven2/repository</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

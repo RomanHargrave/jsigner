@@ -64,23 +64,23 @@ Three steps are required:
 <dependency>
   <groupId>br.com.jsigner</groupId> 
   <artifactId>jsigner-annotations</artifactId>
-  <version>[projectVersion]</version>	
+  <version>projectVersion</version>	
 </dependency>
 }}}
-Where [projectVersion] should be replaced by the version that you wish to use.
+Where 'projectVersion' should be replaced by the version that you wish to use.
 
-===3. Declare the jsigner-annotations dependency in your project===
+===4. Declare the jsigner-maven-plugin dependency in your project===
   You must declare the following plugin in your pom.xml for using the *mvn jsigner:design* command. 
 
 {{{
 <plugin>
 	<groupId>br.com.jsigner</groupId>
 	<artifactId>jsigner-maven-plugin</artifactId>
-	<version>[projectVersion]</version>
+	<version>projectVersion</version>
 	<configuration>
-		<outputFolder>[outputFolder]</outputFolder>
+		<outputFolder>outputFolder</outputFolder>
 	</configuration>
 </plugin>
 }}}
 
-Where [projectVersion] should be replaced by the version of the plugin that you wish to use, and [outputFolder] is the folder that you wish to store the diagrams.
+Where projectVersion should be replaced by the version of the plugin that you wish to use, and outputFolder is the folder that you wish to store the diagrams.

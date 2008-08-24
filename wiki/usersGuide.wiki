@@ -2,16 +2,43 @@
 
 = Introduction =
 
-Automating the class diagrams generation is quite simple, you just use the br.com.agile.jsigner.annotations.Domain annotation on the classes that you want to be in the diagram, specifying the diagram name (or names, if the class will appear in multiple diagrams). 
+Automating the class diagrams generation is quite simple, you just use the @Domain annotation on the classes that you want to be in the diagram, specifying the diagram name (or names, if the class will appear in multiple diagrams). 
 
 
 = Details =
 
-First of all, you must configure your settings.xml to include the jsigner maven2 repository.
-Use the following URL: 
-http://jsigner.googlecode.com/svn/maven2/repository/
+Three steps are required: 
+  # Configure the Jsigner repository
+  # Declare the jsigner-annotations dependency in your project
+  # Configure the plugin repository  
 
-Add the following dependency in you project pom.xml for importing the @Domain annotation.
+
+
+==1. Configure the Jsigner repository==
+  You can configure the repository in the settings.xml or the pom.xml of your project
+  The url for the repository is: 
+   *http://jsigner.googlecode.com/svn/maven2/repository/*
+
+   pom.xml configuration:
+   Use the following code snippet inside the <repositories> 
+
+{{{
+<repository>
+            <id>jsigner</id>
+            <name>Jsigner maven repository</name>
+            <url>http://jsigner.googlecode.com/svn/maven2/repository</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+</repository>
+}}}
+
+
+==2. Declare the jsigner-annotations dependency in your project==
+  You must declare the following dependency in your pom.xml for importing the @Domain annotation:
 
 {{{
 <dependency>
@@ -20,3 +47,7 @@ Add the following dependency in you project pom.xml for importing the @Domain an
   <version>1.0-SNAPSHOT</version>	
 </dependency>
 }}}
+
+==3. Configure the plugin repository==
+
+Add the following code 

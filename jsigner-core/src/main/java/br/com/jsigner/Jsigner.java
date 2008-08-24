@@ -21,7 +21,7 @@ import org.modsl.core.lang.uml.UMLTranslator;
 import org.modsl.core.render.StyleLoader;
 import org.scannotation.AnnotationDB;
 
-import br.com.agile.jsigner.annotations.Domain;
+import br.com.jsigner.annotations.Domain;
 import br.com.jsigner.diagram.ClassDiagram;
 import br.com.jsigner.diagram.DiagramBuilder;
 import br.com.jsigner.scanner.JarScanner;

@@ -9,8 +9,6 @@ import javax.persistence.OneToOne;
 
 import org.junit.Test;
 
-import br.com.jsigner.diagram.RelationshipsBuilder;
-
 public class RelationshipBuilderTest {
 	List<CarModel> models = new ArrayList<CarModel>();
 

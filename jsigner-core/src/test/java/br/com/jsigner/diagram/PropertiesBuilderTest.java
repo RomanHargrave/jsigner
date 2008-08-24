@@ -7,9 +7,6 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import br.com.jsigner.diagram.ClassDiagram;
-import br.com.jsigner.diagram.PropertiesBuilder;
-
 public class PropertiesBuilderTest {
 	
 	private String string1;

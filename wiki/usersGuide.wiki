@@ -9,7 +9,7 @@ Automating the class diagrams generation is quite simple, you just use the br.co
 
 First of all, you must configure your settings.xml to include the jsigner maven2 repository.
 Use the following URL: 
-http://code.google.com/p/jsigner/source/browse/trunk/maven2/repository
+http://jsigner.googlecode.com/svn/maven2/repository/
 
 Add the following dependency in you project pom.xml for importing the @Domain annotation.
 

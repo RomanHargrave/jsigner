@@ -87,4 +87,4 @@ Where projectVersion should be replaced by the version of the plugin that you wi
 
 =Usage=
 
-The plugin is invoked with the 'mvn jsigner:design' command, wich scans the pom path/target recursively, drawing the diagrams to the configured output folder.
+The plugin is invoked with the `mvn jsigner:design` command, wich scans the pom path/target recursively, drawing the diagrams to the configured output folder.

@@ -7,7 +7,7 @@ Automating the class diagrams generation is quite simple, you just use the @Doma
 
 = Maven Configuration =
 
-Three steps are required: 
+ Steps: 
   # Configure the Jsigner repository
   # Configure the plugin repository  
   # Declare the jsigner-annotations dependency in your project
@@ -84,8 +84,3 @@ Where 'projectVersion' should be replaced by the version that you wish to use.
 }}}
 
 Where projectVersion should be replaced by the version of the plugin that you wish to use, and outputFolder is the folder that you wish to store the diagrams.
-
-//TODO verificar a configuracao do pluginGroups e explicar como usar o plugin
-<pluginGroups>
-  <pluginGroup>br.com.jsigner</pluginGroup>
-</pluginGroups>

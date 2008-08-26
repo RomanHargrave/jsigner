@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -106,7 +107,7 @@ public class RelationshipsBuilder {
 	}
 
 	private static Cardinality testCardinality(AccessibleObject obj) {
-		if (obj.isAnnotationPresent(OneToOne.class)) {
+		if (obj.isAnnotationPresent(OneToOne.class) || obj.isAnnotationPresent(Embedded.class)) {
 			return Cardinality.OneToOne;
 		} else if (obj.isAnnotationPresent(OneToMany.class)) {
 			return Cardinality.OneToMany;

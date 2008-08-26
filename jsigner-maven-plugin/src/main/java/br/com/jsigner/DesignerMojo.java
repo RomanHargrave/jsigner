@@ -14,7 +14,7 @@ import org.apache.maven.plugin.logging.Log;
 public class DesignerMojo extends AbstractMojo {
 
 	/**
-	 * @parameter default-value="target/"
+	 * @parameter
 	 */
 	private File jarsFolder;
 
@@ -36,10 +36,7 @@ public class DesignerMojo extends AbstractMojo {
 				log.info("diagrams created at: "
 						+ outputFolder.getAbsolutePath());
 			} else {
-				log.info("path not found: " + jarsFolder.getAbsolutePath());
-				log.info("Aborting execution!");
-				throw new MojoFailureException("path not found: "
-						+ jarsFolder.getAbsolutePath());
+				System.out.println("jarsFolder" + jarsFolder.toString() + " doesn't exists, ignoring it...");
 			}
 		} catch (MalformedURLException e) {
 			throw new MojoExecutionException(e.getMessage(), e);
@@ -50,6 +47,9 @@ public class DesignerMojo extends AbstractMojo {
 
 	private void checkPreConditions() throws MojoFailureException {
 		if (outputFolder == null) {
+			throw new MojoFailureException("Variable jars folder must be set!");
+		}
+		if (jarsFolder == null) {
 			throw new MojoFailureException("Variable outputFolder must be set!");
 		}
 		if (!outputFolder.exists()) {

@@ -20,7 +20,7 @@ public class PropertiesBuilder {
 
 			// Se a classe do atributo esta mapeada com @Domain, entao nao eh
 			// tratada como atributo
-			if (diagramClasses.contains(field.getType())
+			if (classNames.contains(field.getType().getName())
 					|| verifyGenericParameter(classNames, field)
 					|| field.getName().equals("serialVersionUID") || field.getName().contains("$")) {
 				continue;

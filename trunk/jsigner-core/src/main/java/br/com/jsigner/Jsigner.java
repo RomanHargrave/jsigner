@@ -47,7 +47,7 @@ public class Jsigner {
 			Iterator<String> iterator = classes.iterator();
 			while (iterator.hasNext()) {
 				String nextClazz = iterator.next();
-				System.out.println("reading diagram class: " + nextClazz);
+				System.out.println("loading class: " + nextClazz);
 				URLClassLoader classLoader = URLClassLoader.newInstance(urls,
 						Thread.currentThread().getContextClassLoader());
 				Class<?> clazz = classLoader.loadClass(nextClazz);
@@ -108,7 +108,6 @@ public class Jsigner {
 			String classDiagramPath = outputFolder.getAbsolutePath()
 					+ File.separator + diagram.getName() + "ClassDiagram.png";
 			File file = new File(classDiagramPath);
-			System.out.println(classDiagramPath);
 			ImageIO.write(image, "png", file);
 		} catch (RecognitionException e) {
 			throw new RuntimeException(e);

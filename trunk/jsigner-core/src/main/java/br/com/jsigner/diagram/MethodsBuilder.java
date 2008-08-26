@@ -12,8 +12,8 @@ public class MethodsBuilder {
 		for (Method method : methods) {
 			int mod = method.getModifiers();
 
-			if (Modifier.isPrivate(mod) || method.getName().contains("get")
-					|| method.getName().contains("set")) {
+			if (Modifier.isPrivate(mod) || method.getName().startsWith("get")
+					|| method.getName().startsWith("set") || method.getName().startsWith("is")) {
 				continue;
 			}
 			builder.append("\n");

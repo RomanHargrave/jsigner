@@ -10,6 +10,7 @@ import org.apache.maven.plugin.logging.Log;
 
 /**
  * @goal design
+ * @aggregator
  */
 public class DesignerMojo extends AbstractMojo {
 

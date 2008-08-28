@@ -89,4 +89,4 @@ The jarsFolder is the target where maven store the jars of your project. In a je
 
 =Usage=
 
-The plugin is invoked with the `mvn jsigner:design` command, wich scans the jars in the configured "jarsFolder" recursively, and drawing the diagrams to the configured output folder.
+The plugin is invoked with the `mvn jsigner:design` command, wich scans the jars in the configured "jarsFolder" recursively, and draw the diagrams to the configured output folder.

@@ -12,7 +12,7 @@ import org.apache.maven.plugin.logging.Log;
  * @goal design
  * @aggregator
  */
-public class DesignerMojo extends AbstractMojo {
+public class JsignerMojo extends AbstractMojo {
 
 	/**
 	 * @parameter
@@ -47,11 +47,15 @@ public class DesignerMojo extends AbstractMojo {
 	}
 
 	private void checkPreConditions() throws MojoFailureException {
-		if (outputFolder == null) {
-			throw new MojoFailureException("Variable jars folder must be set!");
-		}
 		if (jarsFolder == null) {
-			throw new MojoFailureException("Variable outputFolder must be set!");
+			throw new MojoFailureException("Variable outputFolder must be set, please verify the plugin configuration.");
+		}
+		if (!jarsFolder.exists()) {
+			throw new MojoFailureException("jarsFolder '"+ jarsFolder  +"' doesn't exists! Aborting execution, please verify the plugin configuration.");
+		}
+
+		if (outputFolder == null) {
+			throw new MojoFailureException("Variable jars folder must be set, please verify the plugin configuration.");
 		}
 		if (!outputFolder.exists()) {
 			System.out

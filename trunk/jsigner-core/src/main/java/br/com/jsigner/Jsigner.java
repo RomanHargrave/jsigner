@@ -69,6 +69,29 @@ public class Jsigner {
 		}
 	}
 
+	private static void buildImage(ClassDiagram diagram, File outputFolder) {
+		StyleLoader stl = new StyleLoader();
+		stl.load("cfg/uml:cfg", "uml", UMLMetaType.class);
+
+		UMLTranslator translator = new UMLTranslator();
+
+		try {
+			String diagramCode = diagram.generateDiagramCode();
+			System.out.println("\nDiagram: " + diagram.getName());
+			System.out.println("Code: \n" + diagramCode);
+			BufferedImage image = translator.translate(diagramCode);
+
+			String classDiagramPath = outputFolder.getAbsolutePath()
+					+ File.separator + diagram.getName() + "ClassDiagram.png";
+			File file = new File(classDiagramPath);
+			ImageIO.write(image, "png", file);
+		} catch (RecognitionException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private static URL[] generateURLs(File f) throws MalformedURLException {
 		JarScanner scanner = new JarScanner();
 		Set<File> jars = scanner.scan(f);
@@ -95,24 +118,4 @@ public class Jsigner {
 		}
 	}
 
-	private static void buildImage(ClassDiagram diagram, File outputFolder) {
-		StyleLoader stl = new StyleLoader();
-		stl.load("cfg/uml:cfg", "uml", UMLMetaType.class);
-
-		UMLTranslator translator = new UMLTranslator();
-
-		try {
-			String diagramCode = diagram.generateDiagramCode();
-			BufferedImage image = translator.translate(diagramCode);
-
-			String classDiagramPath = outputFolder.getAbsolutePath()
-					+ File.separator + diagram.getName() + "ClassDiagram.png";
-			File file = new File(classDiagramPath);
-			ImageIO.write(image, "png", file);
-		} catch (RecognitionException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
 }

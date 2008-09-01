@@ -29,9 +29,10 @@ public class RelationshipsBuilder {
 			builder.append("\n");
 			builder.append("\t");
 			// Trata campos normais
-			if (classNames.contains(field.getType().getName())) {
-				Cardinality cardinality = discoverCardinality(field, clazz);
-				switch (cardinality) {
+			FieldOrRelationshipSpecification specification = new FieldOrRelationshipSpecification();
+			if (specification.isRelationship(clazz, classNames, field)) {
+				Multiplicity multiplicity = discoverMultiplicity(field, clazz);
+				switch (multiplicity) {
 				case OneToOne:
 					builder.append("1->1");
 					break;
@@ -44,31 +45,20 @@ public class RelationshipsBuilder {
 				default:
 					continue;
 				}
-				builder.append("(").append(field.getType().getSimpleName())
-						.append("); ");
-			}
-			// Trata campos do tipo COllection com generics
-			else if (verifyGenericParameter(classNames, field)) {
-				Cardinality cardinality = discoverCardinality(field, clazz);
-				switch (cardinality) {
-				case OneToOne:
-					builder.append("1->1");
-					break;
-				case OneToMany:
-					builder.append("1->*");
-					break;
-				case ManyToMany:
-					builder.append("*->*");
-					break;
-				default:
-					continue;
-				}
-				String fieldName = field.getGenericType().toString();
-				fieldName = fieldName.substring(fieldName.lastIndexOf(".") + 1,
-						fieldName.length() - 1);
 
-				builder.append("(").append(fieldName).append("); ");
+				if (specification.isGeneric(classNames, field)) {
+					String fieldName = field.getGenericType().toString();
+					fieldName = fieldName.substring(
+							fieldName.lastIndexOf(".") + 1,
+							fieldName.length() - 1);
+
+					builder.append("(").append(fieldName).append("); ");
+				} else {
+					builder.append("(").append(field.getType().getSimpleName())
+							.append("); ");
+				}
 			}
+
 		}
 		return builder.toString();
 	}
@@ -83,9 +73,9 @@ public class RelationshipsBuilder {
 		return classNames.contains(field.getGenericType());
 	}
 
-	private static Cardinality discoverCardinality(Field field, Class<?> clazz) {
+	private static Multiplicity discoverMultiplicity(Field field, Class<?> clazz) {
 		try {
-			Cardinality cardinality = testCardinality(field);
+			Multiplicity cardinality = discoverMultiplicityBasedOnPersistenceAnnotations(field);
 
 			if (cardinality == null) {
 				String fieldName = field.getName();
@@ -97,30 +87,35 @@ public class RelationshipsBuilder {
 				Class<?>[] params = {};
 				Method getter = clazz.getMethod(getterName, params);
 
-				cardinality = testCardinality(getter);
+				cardinality = discoverMultiplicityBasedOnPersistenceAnnotations(getter);
+				if (cardinality == null) {
+					throw new ImpossibleDefineMultiplicityException(clazz,
+							field);
+				}
 			}
 			return cardinality;
 		} catch (SecurityException e) {
 			throw new RuntimeException(e);
 		} catch (NoSuchMethodException e) {
-			return Cardinality.OneToOne;
+			return Multiplicity.OneToOne;
 		}
 	}
 
-	private static Cardinality testCardinality(AccessibleObject obj) {
+	private static Multiplicity discoverMultiplicityBasedOnPersistenceAnnotations(
+			AccessibleObject obj) {
 		if (obj.isAnnotationPresent(OneToOne.class)
 				|| obj.isAnnotationPresent(ManyToOne.class)
 				|| obj.isAnnotationPresent(Embedded.class)) {
-			return Cardinality.OneToOne;
+			return Multiplicity.OneToOne;
 		} else if (obj.isAnnotationPresent(OneToMany.class)) {
-			return Cardinality.OneToMany;
+			return Multiplicity.OneToMany;
 		} else if (obj.isAnnotationPresent(ManyToMany.class)) {
-			return Cardinality.ManyToMany;
+			return Multiplicity.ManyToMany;
 		}
 		return null;
 	}
 
-	private static enum Cardinality {
+	private static enum Multiplicity {
 		OneToOne, OneToMany, ManyToMany
 	}
 

@@ -77,14 +77,14 @@ public class Jsigner {
 
 		try {
 			String diagramCode = diagram.generateDiagramCode();
-			System.out.println("\nDiagram: " + diagram.getName());
-			System.out.println("Code: \n" + diagramCode);
 			BufferedImage image = translator.translate(diagramCode);
 
 			String classDiagramPath = outputFolder.getAbsolutePath()
-					+ File.separator + diagram.getName() + "ClassDiagram.png";
+					+ File.separator + diagram.getName() + ".png";
 			File file = new File(classDiagramPath);
 			ImageIO.write(image, "png", file);
+			
+			System.out.println("Diagram finished: " + diagram.getName());
 		} catch (RecognitionException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {

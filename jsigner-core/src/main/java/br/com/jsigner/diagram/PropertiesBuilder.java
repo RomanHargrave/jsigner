@@ -18,11 +18,10 @@ public class PropertiesBuilder {
 		builder.append("\t");
 		for (Field field : fields) {
 
-			// Se a classe do atributo esta mapeada com @Domain, entao nao eh
-			// tratada como atributo
-			if (classNames.contains(field.getType().getName())
-					|| verifyGenericParameter(classNames, field)
-					|| field.getName().equals("serialVersionUID") || field.getName().contains("$")) {
+			FieldOrRelationshipSpecification specification = new FieldOrRelationshipSpecification();
+			if (specification.isRelationship(clazz, classNames, field)
+					|| field.getName().equals("serialVersionUID")
+					|| field.getName().contains("$")) {
 				continue;
 			}
 
@@ -31,15 +30,4 @@ public class PropertiesBuilder {
 		}
 		return builder.toString();
 	}
-
-	private static boolean verifyGenericParameter(List<String> classNames,
-			Field field) {
-		for (String className : classNames) {
-			if (field.getGenericType().toString().contains(className + ">")) {
-				return true;
-			}
-		}
-		return classNames.contains(field.getGenericType());
-	}
-
 }

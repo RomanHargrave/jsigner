@@ -7,9 +7,9 @@ import java.util.List;
 public class PropertiesBuilder {
 
 	public static String generatePropertiesCode(Class<?> clazz,
-			List<Class<?>> diagramClasses) {
+			ClassDiagram classDiagram) {
 		List<String> classNames = new ArrayList<String>();
-		for (Class<?> diagramClazz : diagramClasses) {
+		for (Class<?> diagramClazz : classDiagram.getClasses()) {
 			classNames.add(diagramClazz.getName());
 		}
 
@@ -18,7 +18,7 @@ public class PropertiesBuilder {
 		builder.append("\t");
 		for (Field field : fields) {
 
-			FieldOrRelationshipSpecification specification = new FieldOrRelationshipSpecification();
+			RelationshipSpecification specification = new RelationshipSpecification();
 			if (specification.isRelationship(clazz, classNames, field)
 					|| field.getName().equals("serialVersionUID")
 					|| field.getName().contains("$")) {

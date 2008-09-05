@@ -1,26 +1,14 @@
 package br.com.jsigner.diagram;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.Embedded;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import br.com.jsigner.relationship.Relationship;
+import br.com.jsigner.repository.RelationshipRepository;
 
 public class RelationshipsBuilder {
 
 	public static String generateRelationShipsCode(Class<?> clazz,
-			List<Class<?>> diagramClasses) {
-
-		List<String> classNames = new ArrayList<String>();
-		for (Class<?> diagramClazz : diagramClasses) {
-			classNames.add(diagramClazz.getName());
-		}
+			ClassDiagram classDiagram) {
 
 		Field[] fields = clazz.getDeclaredFields();
 		StringBuilder builder = new StringBuilder();
@@ -28,95 +16,19 @@ public class RelationshipsBuilder {
 		for (Field field : fields) {
 			builder.append("\n");
 			builder.append("\t");
-			// Trata campos normais
-			FieldOrRelationshipSpecification specification = new FieldOrRelationshipSpecification();
-			if (specification.isRelationship(clazz, classNames, field)) {
-				Multiplicity multiplicity = discoverMultiplicity(field, clazz);
-				switch (multiplicity) {
-				case OneToOne:
-					builder.append("1->1");
-					break;
-				case OneToMany:
-					builder.append("1->*");
-					break;
-				case ManyToMany:
-					builder.append("*->*");
-					break;
-				default:
-					continue;
-				}
 
-				if (specification.isGeneric(classNames, field)) {
-					String fieldName = field.getGenericType().toString();
-					fieldName = fieldName.substring(
-							fieldName.lastIndexOf(".") + 1,
-							fieldName.length() - 1);
+			RelationshipSpecification specification = new RelationshipSpecification();
+			if (specification.isRelationship(clazz, classDiagram
+					.getClassesNames(), field)) {
+				Relationship relationship = new Relationship(clazz, field,
+						classDiagram);
 
-					builder.append("(").append(fieldName).append("); ");
-				} else {
-					builder.append("(").append(field.getType().getSimpleName())
-							.append("); ");
+				if (!RelationshipRepository.relationshipExists(relationship)) {
+					builder.append(relationship.getCode());
+					RelationshipRepository.store(relationship);
 				}
 			}
-
 		}
 		return builder.toString();
 	}
-
-	private static boolean verifyGenericParameter(List<String> classNames,
-			Field field) {
-		for (String className : classNames) {
-			if (field.getGenericType().toString().contains(className + ">")) {
-				return true;
-			}
-		}
-		return classNames.contains(field.getGenericType());
-	}
-
-	private static Multiplicity discoverMultiplicity(Field field, Class<?> clazz) {
-		try {
-			Multiplicity cardinality = discoverMultiplicityBasedOnPersistenceAnnotations(field);
-
-			if (cardinality == null) {
-				String fieldName = field.getName();
-				String firstCharacter = fieldName.substring(0, 1);
-				String getterName = "get"
-						+ fieldName.replaceFirst(firstCharacter, firstCharacter
-								.toUpperCase());
-
-				Class<?>[] params = {};
-				Method getter = clazz.getMethod(getterName, params);
-
-				cardinality = discoverMultiplicityBasedOnPersistenceAnnotations(getter);
-				if (cardinality == null) {
-					throw new ImpossibleDefineMultiplicityException(clazz,
-							field);
-				}
-			}
-			return cardinality;
-		} catch (SecurityException e) {
-			throw new RuntimeException(e);
-		} catch (NoSuchMethodException e) {
-			return Multiplicity.OneToOne;
-		}
-	}
-
-	private static Multiplicity discoverMultiplicityBasedOnPersistenceAnnotations(
-			AccessibleObject obj) {
-		if (obj.isAnnotationPresent(OneToOne.class)
-				|| obj.isAnnotationPresent(ManyToOne.class)
-				|| obj.isAnnotationPresent(Embedded.class)) {
-			return Multiplicity.OneToOne;
-		} else if (obj.isAnnotationPresent(OneToMany.class)) {
-			return Multiplicity.OneToMany;
-		} else if (obj.isAnnotationPresent(ManyToMany.class)) {
-			return Multiplicity.ManyToMany;
-		}
-		return null;
-	}
-
-	private static enum Multiplicity {
-		OneToOne, OneToMany, ManyToMany
-	}
-
 }

@@ -4,14 +4,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import br.com.jsigner.JsignerConfiguration;
 import br.com.jsigner.annotations.Domain;
 
 public class DiagramBuilder {
 
 	private HashMap<String, ClassDiagram> diagrams = new HashMap<String, ClassDiagram>();
 
-	public void build(List<Class<?>> classes) {
-		for (Class<?> clazz : classes) {
+	public void build(List<Class<?>> diagramClasses) {
+		for (Class<?> clazz : diagramClasses) {
 			String[] diagramNames = clazz.getAnnotation(Domain.class).value();
 
 			for (String diagramName : diagramNames) {

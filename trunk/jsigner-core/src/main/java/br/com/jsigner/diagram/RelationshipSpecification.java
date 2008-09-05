@@ -3,13 +3,17 @@ package br.com.jsigner.diagram;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class FieldOrRelationshipSpecification {
+public class RelationshipSpecification {
+
+	public RelationshipSpecification() {
+	}
 
 	public boolean isRelationship(Class<?> clazz, List<String> classNames,
 			Field field) {
 		return (classNames.contains(field.getType().getName()) && !isCiclicReference(
 				field, clazz))
-				|| (isGeneric(classNames, field) && !isCiclicReference(field, clazz));
+				|| (isGeneric(classNames, field) && !isCiclicReference(field,
+						clazz));
 	}
 
 	private boolean isCiclicReference(Field field, Class<?> clazz) {

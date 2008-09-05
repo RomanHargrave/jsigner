@@ -53,7 +53,6 @@ public class Jsigner {
 				Class<?> clazz = classLoader.loadClass(nextClazz);
 				diagramClasses.add(clazz);
 			}
-
 			DiagramBuilder builder = new DiagramBuilder();
 			builder.build(diagramClasses);
 

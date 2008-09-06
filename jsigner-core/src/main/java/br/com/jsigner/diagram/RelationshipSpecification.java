@@ -3,6 +3,9 @@ package br.com.jsigner.diagram;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import br.com.jsigner.relationship.Relationship;
+import br.com.jsigner.repository.RelationshipRepository;
+
 public class RelationshipSpecification {
 
 	public RelationshipSpecification() {
@@ -10,6 +13,18 @@ public class RelationshipSpecification {
 
 	public boolean isRelationship(Class<?> clazz, List<String> classNames,
 			Field field) {
+		
+		if (suitableForBeRelationship(clazz, classNames, field)) {
+			Relationship relationship = new Relationship(clazz, field, classNames);
+			if (!RelationshipRepository.inverseRelationshipExists(relationship)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean suitableForBeRelationship(Class<?> clazz,
+			List<String> classNames, Field field) {
 		return (classNames.contains(field.getType().getName()) && !isCiclicReference(
 				field, clazz))
 				|| (isGeneric(classNames, field) && !isCiclicReference(field,

@@ -2,6 +2,7 @@ package br.com.jsigner.relationship;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import br.com.jsigner.JsignerConfiguration;
 import br.com.jsigner.diagram.ClassDiagram;
@@ -12,10 +13,19 @@ public class Relationship {
 	private Multiplicity multiplicity;
 	private String rootClassName;
 	private String targetClassName;
-	private ClassDiagram classDiagram;
+	private List<String> classesNames;
 
 	public Relationship(Class<?> root, Field field, ClassDiagram classDiagram) {
-		this.classDiagram = classDiagram;
+		this.classesNames = classDiagram.getClassesNames();
+		setup(root, field);
+	}
+	
+	public Relationship(Class<?> root, Field field, List<String> classesNames) {
+		this.classesNames = classesNames;
+		setup(root, field);
+	}
+
+	private void setup(Class<?> root, Field field) {
 		this.rootClassName = root.getSimpleName();
 		this.discoverMultiplicity(root, field);
 
@@ -23,20 +33,18 @@ public class Relationship {
 			String fieldName = field.getGenericType().toString();
 			this.targetClassName = fieldName.substring(fieldName.lastIndexOf(".") + 1,
 					fieldName.length() - 1);
-			
 		} else {
 			this.targetClassName = field.getType().getSimpleName();
 		}
-
 	}
 
 	private boolean isGeneric(Field field) {
-		for (String className : classDiagram.getClassesNames()) {
+		for (String className : classesNames) {
 			if (field.getGenericType().toString().contains(className + ">")) {
 				return true;
 			}
 		}
-		return classDiagram.getClassesNames().contains(field.getGenericType());
+		return classesNames.contains(field.getGenericType());
 	}
 
 	public void discoverMultiplicity(Class<?> root, Field field) {

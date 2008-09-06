@@ -29,7 +29,7 @@ public class ClassesBuilder {
 
 			builder.append("{\n");
 
-			builder.append(PropertiesBuilder.generatePropertiesCode(clazz,
+			builder.append(AttributesBuilder.generateAttributesCode(clazz,
 					classDiagram));
 			builder.append(RelationshipsBuilder.generateRelationShipsCode(
 					clazz, classDiagram));

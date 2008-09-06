@@ -13,7 +13,7 @@ public class RelationshipRepository {
 		relationships.add(relationship);
 	}
 
-	public static boolean relationshipExists(Relationship relationship) {
+	public static boolean inverseRelationshipExists(Relationship relationship) {
 		for (Relationship storedRelationship : relationships) {
 			if (storedRelationship.isInverseRelation(relationship)) {
 				return true;

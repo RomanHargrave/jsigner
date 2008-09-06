@@ -19,7 +19,7 @@ package br.com.jsigner.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.jsigner.relationship.Relationship;
+import br.com.jsigner.diagram.elements.Relationship;
 
 public class RelationshipRepository {
 

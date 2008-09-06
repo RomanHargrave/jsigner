@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.relationship;
+package br.com.jsigner.diagram.elements;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -23,6 +23,8 @@ import java.util.List;
 import br.com.jsigner.JsignerConfiguration;
 import br.com.jsigner.diagram.ClassDiagram;
 import br.com.jsigner.diagram.ImpossibleDefineMultiplicityException;
+import br.com.jsigner.relationship.Multiplicity;
+import br.com.jsigner.relationship.RelationshipMultiplicityFinder;
 
 public class Relationship {
 

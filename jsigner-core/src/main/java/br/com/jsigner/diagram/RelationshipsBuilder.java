@@ -23,7 +23,7 @@ public class RelationshipsBuilder {
 				Relationship relationship = new Relationship(clazz, field,
 						classDiagram);
 
-				if (!RelationshipRepository.relationshipExists(relationship)) {
+				if (!RelationshipRepository.inverseRelationshipExists(relationship)) {
 					builder.append(relationship.getCode());
 					RelationshipRepository.store(relationship);
 				}

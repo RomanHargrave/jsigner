@@ -10,35 +10,44 @@ import br.com.jsigner.diagram.ImpossibleDefineMultiplicityException;
 public class Relationship {
 
 	private Multiplicity multiplicity;
-	private Class<?> root;
-	private Field target;
+	private String rootClassName;
+	private String targetClassName;
 	private ClassDiagram classDiagram;
 
 	public Relationship(Class<?> root, Field field, ClassDiagram classDiagram) {
-		this.root = root;
-		this.target = field;
+		this.classDiagram = classDiagram;
+		this.rootClassName = root.getSimpleName();
+		this.discoverMultiplicity(root, field);
 
-		this.discoverMultiplicity();
+		if (this.isGeneric(field)) {
+			String fieldName = field.getGenericType().toString();
+			this.targetClassName = fieldName.substring(fieldName.lastIndexOf(".") + 1,
+					fieldName.length() - 1);
+			
+		} else {
+			this.targetClassName = field.getType().getSimpleName();
+		}
+
 	}
 
-	private boolean isTargetGeneric() {
+	private boolean isGeneric(Field field) {
 		for (String className : classDiagram.getClassesNames()) {
-			if (target.getGenericType().toString().contains(className + ">")) {
+			if (field.getGenericType().toString().contains(className + ">")) {
 				return true;
 			}
 		}
-		return classDiagram.getClassesNames().contains(target.getGenericType());
+		return classDiagram.getClassesNames().contains(field.getGenericType());
 	}
 
-	public void discoverMultiplicity() {
+	public void discoverMultiplicity(Class<?> root, Field field) {
 		try {
 			RelationshipMultiplicityFinder multiplicityFinder = JsignerConfiguration
 					.getMultiplicityFinder();
 			Multiplicity multiplicity = multiplicityFinder
-					.findRelationshipMultiplicity(target);
+					.findRelationshipMultiplicity(field);
 
 			if (multiplicity == null) {
-				String fieldName = target.getName();
+				String fieldName = field.getName();
 				String firstCharacter = fieldName.substring(0, 1);
 				String getterName = "get"
 						+ fieldName.replaceFirst(firstCharacter, firstCharacter
@@ -50,8 +59,7 @@ public class Relationship {
 				multiplicity = multiplicityFinder
 						.findRelationshipMultiplicity(getter);
 				if (multiplicity == null) {
-					throw new ImpossibleDefineMultiplicityException(root,
-							target);
+					throw new ImpossibleDefineMultiplicityException(root, field);
 				}
 			}
 			this.multiplicity = multiplicity;
@@ -76,22 +84,14 @@ public class Relationship {
 			builder.append("*->*");
 			break;
 		}
-
-		if (isTargetGeneric()) {
-			String fieldName = target.getGenericType().toString();
-			fieldName = fieldName.substring(fieldName.lastIndexOf(".") + 1,
-					fieldName.length() - 1);
-			builder.append("(").append(fieldName).append("); ");
-		} else {
-			builder.append("(").append(target.getType().getSimpleName())
-					.append("); ");
-		}
+		builder.append("(").append(targetClassName).append("); ");
 		return builder.toString();
 	}
-	
-	//TODO when the target is a Collection, dont store the colection as target, we need to store the type of collection!
+
+	// TODO when the target is a Collection, dont store the colection as target,
+	// we need to store the type of collection!
 	public boolean isInverseRelation(Relationship other) {
-		return other.target.getClass().equals(this.root)
-				&& other.root.equals(this.target.getClass());
+		return other.targetClassName.equals(this.rootClassName)
+				&& other.rootClassName.equals(this.targetClassName);
 	}
 }

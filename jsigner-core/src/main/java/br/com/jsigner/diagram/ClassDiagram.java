@@ -33,7 +33,8 @@ public class ClassDiagram {
 		this.classes.add(clazz);
 		this.classesNames.add(clazz.getName());
 	}
-
+	
+	//TODO replace with visitor
 	public String generateDiagramCode() {
 		StringBuilder builder = new StringBuilder();
 

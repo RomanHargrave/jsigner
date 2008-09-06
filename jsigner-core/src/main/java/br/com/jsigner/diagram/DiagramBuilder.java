@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import br.com.jsigner.JsignerConfiguration;
 import br.com.jsigner.annotations.Domain;
 
 public class DiagramBuilder {

@@ -18,7 +18,7 @@ package br.com.jsigner.diagram;
 
 import java.lang.reflect.Field;
 
-import br.com.jsigner.relationship.Relationship;
+import br.com.jsigner.diagram.elements.Relationship;
 import br.com.jsigner.repository.RelationshipRepository;
 
 public class RelationshipsBuilder {

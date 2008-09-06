@@ -27,11 +27,11 @@ public class ClassesBuilder {
 		builder = new StringBuilder();
 
 		List<String> classNames = new ArrayList<String>();
-		for (Class<?> diagramClass : classDiagram.getClasses()) {
+		for (Class<?> diagramClass : classDiagram.getClassesOld()) {
 			classNames.add(diagramClass.getName());
 		}
 
-		for (Class<?> clazz : classDiagram.getClasses()) {
+		for (Class<?> clazz : classDiagram.getClassesOld()) {
 			if (Modifier.isAbstract(clazz.getModifiers())) {
 				builder.append("abstract ");
 			}

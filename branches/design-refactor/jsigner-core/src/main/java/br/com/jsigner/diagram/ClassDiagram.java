@@ -19,39 +19,47 @@ package br.com.jsigner.diagram;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.jsigner.diagram.elements.Clazz;
+import br.com.jsigner.interpreter.Visitor;
+
 public class ClassDiagram {
 
 	private String name;
-	private List<Class<?>> classes = new ArrayList<Class<?>>();
+	private List<Class<?>> classesOld = new ArrayList<Class<?>>();
 	private List<String> classesNames = new ArrayList<String>();
+	
+	private List<Clazz> classes = new ArrayList<Clazz>();
 
 	public ClassDiagram(String diagramName) {
 		this.name = diagramName;
 	}
 
 	public void addClass(Class<?> clazz) {
-		this.classes.add(clazz);
+		this.classesOld.add(clazz);
 		this.classesNames.add(clazz.getName());
 	}
 	
+	
+	public void accept(Visitor<ClassDiagram> visitor) {
+		visitor.visit(this);
+	}
 	//TODO replace with visitor
 	public String generateDiagramCode() {
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("class diagram ").append(name).append("{\n");
-		builder.append(ClassesBuilder.generateClassesCode(this));
-		builder.append("}");
-
 		
-		return builder.toString();
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public List<Class<?>> getClasses() {
+	public List<Clazz> getClasses() {
 		return classes;
+	}
+
+	public List<Class<?>> getClassesOld() {
+		return classesOld;
 	}
 
 	public List<String> getClassesNames() {

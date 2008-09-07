@@ -14,8 +14,19 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.diagram.elements.relationship;
+package br.com.jsigner.interpreter;
 
-public enum Multiplicity {
-	OneToOne, OneToMany, ManyToMany
+import java.util.List;
+
+import br.com.jsigner.diagram.ClassDiagram;
+import br.com.jsigner.diagram.elements.Clazz;
+
+public interface ClassDiagramVisitor extends Visitor<ClassDiagram, String> {
+
+	public abstract void setup(List<Clazz> diagramClasses);
+
+	public abstract void visit(ClassDiagram classDiagram);
+
+	public abstract String getResult();
+
 }

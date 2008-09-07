@@ -31,6 +31,7 @@ public class RelationshipSpecification {
 		if (suitableForBeRelationship(clazz, classNames, field)) {
 			Relationship relationship = new Relationship(clazz, field, classNames);
 			if (!RelationshipRepository.inverseRelationshipExists(relationship)) {
+				RelationshipRepository.store(relationship);
 				return true;
 			}
 		}

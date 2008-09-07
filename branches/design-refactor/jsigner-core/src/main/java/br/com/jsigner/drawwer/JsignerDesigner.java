@@ -14,29 +14,19 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.diagram.elements.relationship;
+package br.com.jsigner.drawwer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
-public class RelationshipRepository {
+import br.com.jsigner.diagram.ClassDiagram;
+import br.com.jsigner.diagram.elements.relationship.RelationshipRepository;
 
-	private static List<Relationship> relationships = new ArrayList<Relationship>();
+public abstract class JsignerDesigner {
 
-	public static void init() {
-		relationships.clear();
+	public void execute(ClassDiagram classDiagram, File outputFolder) {
+		RelationshipRepository.init();
+		this.design(classDiagram, outputFolder);
 	}
 
-	public static void store(Relationship relationship) {
-		relationships.add(relationship);
-	}
-
-	public static boolean inverseRelationshipExists(Relationship relationship) {
-		for (Relationship storedRelationship : relationships) {
-			if (storedRelationship.isInverseRelation(relationship)) {
-				return true;
-			}
-		}
-		return false;
-	}
+	public abstract void design(ClassDiagram classDiagram, File outputFolder);
 }

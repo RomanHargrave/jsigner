@@ -1,9 +1,26 @@
+/**
+ * Copyright (C) 2008 Rafael Farias Silva <rafaferry@gmail.com>
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.com.jsigner.diagram.elements.relationship;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -12,6 +29,9 @@ import org.junit.Test;
 
 import br.com.jsigner.JsignerConfiguration;
 import br.com.jsigner.diagram.ClassDiagram;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.Multiplicity;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.RelationshipMultiplicityFinder;
+import br.com.jsigner.modsl.interpreter.ModslRelationshipVisitor;
 
 public class RelationshipTest {
 
@@ -20,13 +40,13 @@ public class RelationshipTest {
 		RelationshipMultiplicityFinder multiplicityFinder = EasyMock
 				.createNiceMock(RelationshipMultiplicityFinder.class);
 		EasyMock.expect(
-				multiplicityFinder.findRelationshipMultiplicity(EasyMock
+				multiplicityFinder.findRelationshipMultiplicity((AccessibleObject) EasyMock
 						.anyObject())).andReturn(Multiplicity.OneToMany).once();
 		EasyMock.expect(
-				multiplicityFinder.findRelationshipMultiplicity(EasyMock
+				multiplicityFinder.findRelationshipMultiplicity((AccessibleObject) EasyMock
 						.anyObject())).andReturn(Multiplicity.OneToOne).once();
 		EasyMock.expect(
-				multiplicityFinder.findRelationshipMultiplicity(EasyMock
+				multiplicityFinder.findRelationshipMultiplicity((AccessibleObject) EasyMock
 						.anyObject())).andReturn(Multiplicity.ManyToMany).once();
 		EasyMock.replay(multiplicityFinder);
 		
@@ -42,7 +62,7 @@ public class RelationshipTest {
 		
 		assertEquals("Engine", relationship.getTargetClassName());
 		
-		RelationshipVisitor visitor = new RelationshipVisitor();
+		ModslRelationshipVisitor visitor = new ModslRelationshipVisitor();
 		visitor.visit(relationship);
 		visitor.visit(relationship2);
 		visitor.visit(relationship3);
@@ -63,13 +83,13 @@ public class RelationshipTest {
 		assertTrue(relationship.isInverseRelation(relationship5));
 	}
 
-	private static class Car {
+	public static class Car {
 		@SuppressWarnings("unused")
 		private Engine engine;
 
 	}
 
-	private static class Engine {
+	public static class Engine {
 		@SuppressWarnings("unused")
 		private List<Car> cars;
 		@SuppressWarnings("unused")

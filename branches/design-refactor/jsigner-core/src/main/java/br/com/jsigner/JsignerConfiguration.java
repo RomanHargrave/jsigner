@@ -16,16 +16,13 @@
 
 package br.com.jsigner;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import br.com.jsigner.diagram.elements.relationship.PersistenceMultiplicityFinder;
-import br.com.jsigner.diagram.elements.relationship.RelationshipMultiplicityFinder;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.PersistenceMultiplicityFinder;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.RelationshipMultiplicityFinder;
+import br.com.jsigner.drawwer.JsignerDesigner;
+import br.com.jsigner.modsl.drawwer.ModslDesigner;
 
 public abstract class JsignerConfiguration {
 
-	private static List<Class<?>> diagramClasses;
-	private static List<String> diagramClassesNames;
 	private static RelationshipMultiplicityFinder configuredFinder = new PersistenceMultiplicityFinder();
 
 	public static RelationshipMultiplicityFinder getMultiplicityFinder() {
@@ -35,23 +32,6 @@ public abstract class JsignerConfiguration {
 	public static void setMultiplicityFinder(
 			RelationshipMultiplicityFinder multiplicityFinder) {
 		configuredFinder = multiplicityFinder;
-	}
-
-	public static void setDiagramClasses(List<Class<?>> diagramClasses) {
-		JsignerConfiguration.diagramClasses = diagramClasses;
-
-		diagramClassesNames = new ArrayList<String>(diagramClasses.size());
-		for (Class<?> clazz : diagramClasses) {
-			diagramClassesNames.add(clazz.getName());
-		}
-	}
-
-	public static List<Class<?>> getDiagramClasses() {
-		return diagramClasses;
-	}
-
-	public static List<String> getClassesNames() {
-		return diagramClassesNames;
 	}
 
 	public static boolean hidePrivateMethods() {
@@ -64,6 +44,10 @@ public abstract class JsignerConfiguration {
 
 	public static boolean hideGetters() {
 		return true;
+	}
+	
+	public static JsignerDesigner getJsignerDrawwer() {
+		return new ModslDesigner();
 	}
 
 }

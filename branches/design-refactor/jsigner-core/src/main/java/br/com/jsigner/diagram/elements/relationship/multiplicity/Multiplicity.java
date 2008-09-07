@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.diagram.elements.relationship;
+package br.com.jsigner.diagram.elements.relationship.multiplicity;
 
-
-public interface RelationshipMultiplicityFinder {
-	
-	public Multiplicity findRelationshipMultiplicity(Object object);
-		
-
+public enum Multiplicity {
+	OneToOne, OneToMany, ManyToMany
 }

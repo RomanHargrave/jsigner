@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.jsigner.diagram.elements.Clazz;
-import br.com.jsigner.interpreter.modsl.ClassDiagramVisitor;
+import br.com.jsigner.interpreter.ClassDiagramVisitor;
 
 public class ClassDiagram {
 
@@ -43,7 +43,7 @@ public class ClassDiagram {
 
 	public boolean containsClass(Class<?> clazz) {
 		for (Clazz existingClazz : classes) {
-			if (existingClazz.wrappedClassEquals(existingClazz)) {
+			if (existingClazz.wrappedClassEquals(clazz)) {
 				return true;
 			}
 		}
@@ -55,6 +55,9 @@ public class ClassDiagram {
 	}
 	
 	public void accept(ClassDiagramVisitor visitor) {
+		for (Clazz clazz : classes) {
+			clazz.setup();
+		}
 		visitor.setup(classes);
 		visitor.visit(this);
 	}

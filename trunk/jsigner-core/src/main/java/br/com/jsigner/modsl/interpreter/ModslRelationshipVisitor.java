@@ -32,6 +32,7 @@ public class ModslRelationshipVisitor implements RelationshipVisitor {
 
 	public void visit(Relationship relationship) {
 		Multiplicity multiplicity = relationship.getMultiplicity();
+		diagramCode.append("\t\t");
 		switch (multiplicity) {
 		case OneToOne:
 			diagramCode.append("1->1");

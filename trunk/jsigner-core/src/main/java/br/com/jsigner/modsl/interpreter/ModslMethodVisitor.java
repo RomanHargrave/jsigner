@@ -27,6 +27,7 @@ public class ModslMethodVisitor implements MethodVisitor{
 	private StringBuilder diagramCode = new StringBuilder();
 
 	public void visit(Method method) {
+		diagramCode.append("\t\t");
 		if(method.isPrivate()) {
 			diagramCode.append("- ");
 		} else if (method.isProtected()) {

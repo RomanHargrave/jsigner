@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.modsl.drawwer;
+package br.com.jsigner.modsl.designer;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -27,8 +27,8 @@ import org.modsl.core.lang.uml.UMLMetaType;
 import org.modsl.core.lang.uml.UMLTranslator;
 import org.modsl.core.render.StyleLoader;
 
+import br.com.jsigner.designer.JsignerDesigner;
 import br.com.jsigner.diagram.ClassDiagram;
-import br.com.jsigner.drawwer.JsignerDesigner;
 import br.com.jsigner.interpreter.ClassDiagramVisitor;
 import br.com.jsigner.modsl.interpreter.ModslClassDiagramVisitor;
 

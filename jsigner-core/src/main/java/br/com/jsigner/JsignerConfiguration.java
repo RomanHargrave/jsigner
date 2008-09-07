@@ -16,10 +16,10 @@
 
 package br.com.jsigner;
 
+import br.com.jsigner.designer.JsignerDesigner;
 import br.com.jsigner.diagram.elements.relationship.multiplicity.PersistenceMultiplicityFinder;
 import br.com.jsigner.diagram.elements.relationship.multiplicity.RelationshipMultiplicityFinder;
-import br.com.jsigner.drawwer.JsignerDesigner;
-import br.com.jsigner.modsl.drawwer.ModslDesigner;
+import br.com.jsigner.modsl.designer.ModslDesigner;
 
 public abstract class JsignerConfiguration {
 

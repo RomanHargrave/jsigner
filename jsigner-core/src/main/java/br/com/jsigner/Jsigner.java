@@ -31,9 +31,9 @@ import java.util.Set;
 import org.scannotation.AnnotationDB;
 
 import br.com.jsigner.annotations.Domain;
+import br.com.jsigner.designer.JsignerDesigner;
 import br.com.jsigner.diagram.ClassDiagram;
 import br.com.jsigner.diagram.DiagramBuilder;
-import br.com.jsigner.drawwer.JsignerDesigner;
 import br.com.jsigner.scanner.JarScanner;
 
 public final class Jsigner {

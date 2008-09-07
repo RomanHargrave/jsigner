@@ -42,10 +42,8 @@ public class ModslClazzVisitor implements ClazzVisitor {
 		diagramCode.append("\t\t");
 		diagramCode.append(this.attributeVisitor.getResult());
 		diagramCode.append("\n");
-		diagramCode.append("\t\t");
 		diagramCode.append(this.relationshipVisitor.getResult());
 		diagramCode.append("\n");
-		diagramCode.append("\t\t");
 		diagramCode.append(this.methodVisitor.getResult());
 		diagramCode.append("\n");
 		diagramCode.append("\t");

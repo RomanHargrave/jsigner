@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.relationship;
+package br.com.jsigner.diagram.elements.relationship.multiplicity;
 
 import java.lang.reflect.AccessibleObject;
 

@@ -14,8 +14,29 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.relationship;
+package br.com.jsigner.diagram.elements.relationship;
 
-public enum Multiplicity {
-	OneToOne, OneToMany, ManyToMany
+import java.util.ArrayList;
+import java.util.List;
+
+public class RelationshipRepository {
+
+	private static List<Relationship> relationships = new ArrayList<Relationship>();
+
+	public static void init() {
+		relationships.clear();
+	}
+
+	public static void store(Relationship relationship) {
+		relationships.add(relationship);
+	}
+
+	public static boolean inverseRelationshipExists(Relationship relationship) {
+		for (Relationship storedRelationship : relationships) {
+			if (storedRelationship.isInverseRelation(relationship)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.repository;
+package br.com.jsigner.modsl.interpreter;
 
-import java.util.ArrayList;
-import java.util.List;
+import br.com.jsigner.diagram.elements.attribute.Attribute;
+import br.com.jsigner.interpreter.AttributeVisitor;
 
-import br.com.jsigner.relationship.Relationship;
+public class ModslAttributeVisitor implements AttributeVisitor {
 
-public class RelationshipRepository {
+	private StringBuilder diagramCode = new StringBuilder();
 
-	private static List<Relationship> relationships = new ArrayList<Relationship>();
-
-	public static void store(Relationship relationship) {
-		relationships.add(relationship);
+	public void visit(Attribute attribute) {
+		diagramCode.append(attribute.getName());
+		diagramCode.append(":");
+		diagramCode.append(attribute.getType());
+		diagramCode.append(";");
 	}
 
-	public static boolean inverseRelationshipExists(Relationship relationship) {
-		for (Relationship storedRelationship : relationships) {
-			if (storedRelationship.isInverseRelation(relationship)) {
-				return true;
-			}
-		}
-		return false;
+	public String getResult() {
+		String result = diagramCode.toString();
+		diagramCode = new StringBuilder();
+		return result;
 	}
 
 }

@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.diagram;
+package br.com.jsigner.interpreter;
 
-import java.lang.reflect.Field;
+import java.util.List;
 
-public class ImpossibleDefineMultiplicityException extends RuntimeException {
+import br.com.jsigner.diagram.ClassDiagram;
+import br.com.jsigner.diagram.elements.Clazz;
 
-	private static final long serialVersionUID = -5685081505713145406L;
+public interface ClassDiagramVisitor extends Visitor<ClassDiagram, String> {
 
-	public ImpossibleDefineMultiplicityException(Class<?> clazz, Field field) {
-		super("Impossible to define multiplicity for the relationship:"
-				+ clazz.getSimpleName() + " -> " + field.getName());
-	}
+	public abstract void setup(List<Clazz> diagramClasses);
+
+	public abstract void visit(ClassDiagram classDiagram);
+
+	public abstract String getResult();
+
 }

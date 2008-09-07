@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.drawwer;
+package br.com.jsigner.designer;
 
 import java.io.File;
 

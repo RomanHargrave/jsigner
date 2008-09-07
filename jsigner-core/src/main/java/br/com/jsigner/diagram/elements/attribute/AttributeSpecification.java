@@ -14,27 +14,24 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.diagram;
+package br.com.jsigner.diagram.elements.attribute;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
-import br.com.jsigner.attribute.AttributeSpecification;
+import br.com.jsigner.diagram.elements.relationship.RelationshipSpecification;
 
-public class AttributesBuilder {
+public class AttributeSpecification {
 
-	public static String generateAttributesCode(Class<?> clazz,
-			ClassDiagram classDiagram) {
+	public boolean isAttribute(Class<?> clazz, List<String> classesNames,
+			Field field) {
+		RelationshipSpecification relationshipSpecification = new RelationshipSpecification();
 		
-		Field[] fields = clazz.getDeclaredFields();
-		StringBuilder builder = new StringBuilder();
-		builder.append("\t");
-		for (Field field : fields) {
-			AttributeSpecification specification = new AttributeSpecification(); 
-			if (specification.isAttribute(clazz, classDiagram.getClassesNames(), field)) {
-				builder.append(field.getName()).append(":");
-				builder.append(field.getType().getSimpleName()).append(";");
-			}
-		}
-		return builder.toString();
+		//TODO Aplicar regras configuraveis
+		return !relationshipSpecification.isRelationship(clazz, classesNames,
+				field)
+				&& !field.getName().equals("serialVersionUID")
+				&& !field.getName().contains("$");
 	}
+
 }

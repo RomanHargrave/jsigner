@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.diagram.elements;
+package br.com.jsigner.diagram.elements.relationship;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -22,9 +22,6 @@ import java.util.List;
 
 import br.com.jsigner.JsignerConfiguration;
 import br.com.jsigner.diagram.ClassDiagram;
-import br.com.jsigner.diagram.ImpossibleDefineMultiplicityException;
-import br.com.jsigner.relationship.Multiplicity;
-import br.com.jsigner.relationship.RelationshipMultiplicityFinder;
 
 public class Relationship {
 
@@ -37,7 +34,7 @@ public class Relationship {
 		this.classesNames = classDiagram.getClassesNames();
 		setup(root, field);
 	}
-	
+
 	public Relationship(Class<?> root, Field field, List<String> classesNames) {
 		this.classesNames = classesNames;
 		setup(root, field);
@@ -49,8 +46,12 @@ public class Relationship {
 
 		if (this.isGeneric(field)) {
 			String fieldName = field.getGenericType().toString();
-			this.targetClassName = fieldName.substring(fieldName.lastIndexOf(".") + 1,
-					fieldName.length() - 1);
+			this.targetClassName = fieldName.substring(fieldName
+					.lastIndexOf(".") + 1, fieldName.length() - 1);
+			
+			//Skips inner classes
+			this.targetClassName = targetClassName.substring(targetClassName
+					.lastIndexOf("$") + 1, targetClassName.length());
 		} else {
 			this.targetClassName = field.getType().getSimpleName();
 		}
@@ -96,28 +97,28 @@ public class Relationship {
 		}
 	}
 
-	// TODO replace with visitor
-	public String getCode() {
-		StringBuilder builder = new StringBuilder();
-		switch (multiplicity) {
-		case OneToOne:
-			builder.append("1->1");
-			break;
-		case OneToMany:
-			builder.append("1->*");
-			break;
-		case ManyToMany:
-			builder.append("*->*");
-			break;
-		}
-		builder.append("(").append(targetClassName).append("); ");
-		return builder.toString();
+	public void accept(RelationshipVisitor visitor) {
+		visitor.visit(this);
 	}
 
-	// TODO when the target is a Collection, dont store the colection as target,
-	// we need to store the type of collection!
 	public boolean isInverseRelation(Relationship other) {
 		return other.targetClassName.equals(this.rootClassName)
 				&& other.rootClassName.equals(this.targetClassName);
+	}
+
+	public Multiplicity getMultiplicity() {
+		return multiplicity;
+	}
+
+	public void setMultiplicity(Multiplicity multiplicity) {
+		this.multiplicity = multiplicity;
+	}
+
+	public String getTargetClassName() {
+		return targetClassName;
+	}
+
+	public void setTargetClassName(String targetClassName) {
+		this.targetClassName = targetClassName;
 	}
 }

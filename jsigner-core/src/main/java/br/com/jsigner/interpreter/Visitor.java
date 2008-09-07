@@ -1,7 +1,9 @@
 package br.com.jsigner.interpreter;
 
-public interface Visitor<K> {
+public interface Visitor<T, R> {
+
+	public void visit(T object);
 	
-	public void visit(K object);
+	public R getResult();
 
 }

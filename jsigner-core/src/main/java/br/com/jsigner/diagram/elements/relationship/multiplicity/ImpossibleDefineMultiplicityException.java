@@ -14,29 +14,16 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.diagram.elements.relationship;
+package br.com.jsigner.diagram.elements.relationship.multiplicity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Field;
 
-public class RelationshipRepository {
+public class ImpossibleDefineMultiplicityException extends RuntimeException {
 
-	private static List<Relationship> relationships = new ArrayList<Relationship>();
+	private static final long serialVersionUID = -5685081505713145406L;
 
-	public static void init() {
-		relationships.clear();
-	}
-
-	public static void store(Relationship relationship) {
-		relationships.add(relationship);
-	}
-
-	public static boolean inverseRelationshipExists(Relationship relationship) {
-		for (Relationship storedRelationship : relationships) {
-			if (storedRelationship.isInverseRelation(relationship)) {
-				return true;
-			}
-		}
-		return false;
+	public ImpossibleDefineMultiplicityException(Class<?> clazz, Field field) {
+		super("Impossible to define multiplicity for the relationship:"
+				+ clazz.getSimpleName() + " -> " + field.getName());
 	}
 }

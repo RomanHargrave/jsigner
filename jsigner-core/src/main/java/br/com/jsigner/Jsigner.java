@@ -16,7 +16,6 @@
 
 package br.com.jsigner;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -29,20 +28,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.imageio.ImageIO;
-
-import org.antlr.runtime.RecognitionException;
-import org.modsl.core.lang.uml.UMLMetaType;
-import org.modsl.core.lang.uml.UMLTranslator;
-import org.modsl.core.render.StyleLoader;
 import org.scannotation.AnnotationDB;
 
 import br.com.jsigner.annotations.Domain;
 import br.com.jsigner.diagram.ClassDiagram;
 import br.com.jsigner.diagram.DiagramBuilder;
+import br.com.jsigner.drawwer.JsignerDesigner;
 import br.com.jsigner.scanner.JarScanner;
 
-public class Jsigner {
+public final class Jsigner {
 
 	public static void design(File f, File outputFolder)
 			throws MalformedURLException {
@@ -73,8 +67,10 @@ public class Jsigner {
 			builder.build(diagramClasses);
 
 			Collection<ClassDiagram> diagrams = builder.getDiagrams();
+			
+			JsignerDesigner designer = JsignerConfiguration.getJsignerDrawwer();
 			for (ClassDiagram classDiagram : diagrams) {
-				buildImage(classDiagram, outputFolder);
+				designer.execute(classDiagram, outputFolder);
 			}
 
 		} catch (IOException e) {
@@ -84,28 +80,6 @@ public class Jsigner {
 		}
 	}
 
-	private static void buildImage(ClassDiagram diagram, File outputFolder) {
-		StyleLoader stl = new StyleLoader();
-		stl.load("cfg/uml:cfg", "uml", UMLMetaType.class);
-
-		UMLTranslator translator = new UMLTranslator();
-
-		try {
-			String diagramCode = diagram.generateDiagramCode();
-			BufferedImage image = translator.translate(diagramCode);
-
-			String classDiagramPath = outputFolder.getAbsolutePath()
-					+ File.separator + diagram.getName() + ".png";
-			File file = new File(classDiagramPath);
-			ImageIO.write(image, "png", file);
-			
-			System.out.println("Diagram finished: " + diagram.getName());
-		} catch (RecognitionException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 	private static URL[] generateURLs(File f) throws MalformedURLException {
 		JarScanner scanner = new JarScanner();

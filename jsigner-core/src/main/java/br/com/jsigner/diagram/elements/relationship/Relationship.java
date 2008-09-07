@@ -22,6 +22,10 @@ import java.util.List;
 
 import br.com.jsigner.JsignerConfiguration;
 import br.com.jsigner.diagram.ClassDiagram;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.ImpossibleDefineMultiplicityException;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.Multiplicity;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.RelationshipMultiplicityFinder;
+import br.com.jsigner.interpreter.RelationshipVisitor;
 
 public class Relationship {
 
@@ -97,8 +101,8 @@ public class Relationship {
 		}
 	}
 
-	public void accept(RelationshipVisitor visitor) {
-		visitor.visit(this);
+	public void accept(RelationshipVisitor relationshipVisitor) {
+		relationshipVisitor.visit(this);
 	}
 
 	public boolean isInverseRelation(Relationship other) {

@@ -14,16 +14,26 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.diagram.elements.relationship;
+package br.com.jsigner.modsl.interpreter;
 
-import java.lang.reflect.Field;
+import br.com.jsigner.diagram.elements.attribute.Attribute;
+import br.com.jsigner.interpreter.AttributeVisitor;
 
-public class ImpossibleDefineMultiplicityException extends RuntimeException {
+public class ModslAttributeVisitor implements AttributeVisitor {
 
-	private static final long serialVersionUID = -5685081505713145406L;
+	private StringBuilder diagramCode = new StringBuilder();
 
-	public ImpossibleDefineMultiplicityException(Class<?> clazz, Field field) {
-		super("Impossible to define multiplicity for the relationship:"
-				+ clazz.getSimpleName() + " -> " + field.getName());
+	public void visit(Attribute attribute) {
+		diagramCode.append(attribute.getName());
+		diagramCode.append(":");
+		diagramCode.append(attribute.getType());
+		diagramCode.append(";");
 	}
+
+	public String getResult() {
+		String result = diagramCode.toString();
+		diagramCode = new StringBuilder();
+		return result;
+	}
+
 }

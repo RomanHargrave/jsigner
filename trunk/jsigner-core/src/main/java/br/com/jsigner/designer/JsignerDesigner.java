@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.relationship;
+package br.com.jsigner.designer;
 
-import java.lang.reflect.AccessibleObject;
+import java.io.File;
 
-public interface RelationshipMultiplicityFinder {
-	
-	public Multiplicity findRelationshipMultiplicity(AccessibleObject object);
-		
+import br.com.jsigner.diagram.ClassDiagram;
+import br.com.jsigner.diagram.elements.relationship.RelationshipRepository;
 
+public abstract class JsignerDesigner {
+
+	public void execute(ClassDiagram classDiagram, File outputFolder) {
+		RelationshipRepository.init();
+		this.design(classDiagram, outputFolder);
+	}
+
+	public abstract void design(ClassDiagram classDiagram, File outputFolder);
 }

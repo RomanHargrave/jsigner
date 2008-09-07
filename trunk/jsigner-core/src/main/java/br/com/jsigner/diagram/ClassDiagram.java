@@ -19,10 +19,13 @@ package br.com.jsigner.diagram;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.jsigner.diagram.elements.Clazz;
+import br.com.jsigner.interpreter.ClassDiagramVisitor;
+
 public class ClassDiagram {
 
 	private String name;
-	private List<Class<?>> classes = new ArrayList<Class<?>>();
+	private List<Clazz> classes = new ArrayList<Clazz>();
 	private List<String> classesNames = new ArrayList<String>();
 
 	public ClassDiagram(String diagramName) {
@@ -30,32 +33,32 @@ public class ClassDiagram {
 	}
 
 	public void addClass(Class<?> clazz) {
-		this.classes.add(clazz);
+		this.classes.add(new Clazz(clazz, this));
 		this.classesNames.add(clazz.getName());
 	}
 	
-	//TODO replace with visitor
-	public String generateDiagramCode() {
-		StringBuilder builder = new StringBuilder();
-
-		builder.append("class diagram ").append(name).append("{\n");
-		builder.append(ClassesBuilder.generateClassesCode(this));
-		builder.append("}");
-
-		
-		return builder.toString();
-	}
-
 	public String getName() {
 		return name;
 	}
 
-	public List<Class<?>> getClasses() {
-		return classes;
+	public boolean containsClass(Class<?> clazz) {
+		for (Clazz existingClazz : classes) {
+			if (existingClazz.wrappedClassEquals(clazz)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public List<String> getClassesNames() {
-		return classesNames;
+		return this.classesNames;
 	}
-
+	
+	public void accept(ClassDiagramVisitor visitor) {
+		for (Clazz clazz : classes) {
+			clazz.setup();
+		}
+		visitor.setup(classes);
+		visitor.visit(this);
+	}
 }

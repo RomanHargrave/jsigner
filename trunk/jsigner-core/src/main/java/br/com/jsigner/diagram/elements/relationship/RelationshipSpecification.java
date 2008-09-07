@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.diagram;
+package br.com.jsigner.diagram.elements.relationship;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
-import br.com.jsigner.relationship.Relationship;
-import br.com.jsigner.repository.RelationshipRepository;
 
 public class RelationshipSpecification {
 
@@ -33,6 +31,7 @@ public class RelationshipSpecification {
 		if (suitableForBeRelationship(clazz, classNames, field)) {
 			Relationship relationship = new Relationship(clazz, field, classNames);
 			if (!RelationshipRepository.inverseRelationshipExists(relationship)) {
+				RelationshipRepository.store(relationship);
 				return true;
 			}
 		}
@@ -59,7 +58,7 @@ public class RelationshipSpecification {
 		return fieldName.equals(clazz.getSimpleName());
 	}
 
-	public boolean isGeneric(List<String> classNames, Field field) {
+	private boolean isGeneric(List<String> classNames, Field field) {
 		for (String className : classNames) {
 			if (field.getGenericType().toString().contains(className + ">")) {
 				return true;

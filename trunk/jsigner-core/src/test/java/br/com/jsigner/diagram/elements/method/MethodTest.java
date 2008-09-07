@@ -14,28 +14,37 @@
  * limitations under the License.
  */
 
-package br.com.jsigner.diagram;
+package br.com.jsigner.diagram.elements.method;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.lang.reflect.Method;
 
 import org.junit.Test;
 
-public class MethodsBuilderTest {
+import br.com.jsigner.interpreter.MethodVisitor;
+import br.com.jsigner.modsl.interpreter.ModslMethodVisitor;
+
+public class MethodTest {
 
 	@Test
-	public void test() {
-		String code = MethodsBuilder.generateMethodsCode(this.getClass());
-		assertFalse(code.contains("- privateStringMethod():String"));
+	public void methodTest() {
+
+		Method[] declaredMethods = this.getClass().getDeclaredMethods();
+		ModslMethodVisitor visitor = new ModslMethodVisitor();
+		for (Method method : declaredMethods) {
+			br.com.jsigner.diagram.elements.method.Method m = new br.com.jsigner.diagram.elements.method.Method(
+					method);
+			visitor.visit(m);
+		}
+		
+		String code = visitor.getResult();
+
+		assertTrue(code.contains("- privateStringMethod():String"));
 		assertTrue(code.contains("# protectedVoidMethod():void;"));
 		assertTrue(code
-				.contains("+ publicFinalStringMethod(String, MethodsBuilder):String;"));
-		assertTrue(code
-				.contains("# static protectedStaticIntMethod():int;"));
-
-		code = MethodsBuilder.generateMethodsCode(AbstractTestClass.class);
-		assertTrue(code
-				.contains("+ abstract publicAbstractMethodBuilderTestMethod():MethodsBuilderTest;"));
+				.contains("+ publicFinalStringMethod(String, MethodVisitor):String;"));
+		assertTrue(code.contains("# static protectedStaticIntMethod():int;"));
 
 	}
 
@@ -47,7 +56,7 @@ public class MethodsBuilderTest {
 	protected void protectedVoidMethod() {
 	}
 
-	public final String publicFinalStringMethod(String mimi, MethodsBuilder m) {
+	public final String publicFinalStringMethod(String mimi, MethodVisitor m) {
 		return null;
 	}
 
@@ -57,7 +66,7 @@ public class MethodsBuilderTest {
 
 	public abstract static class AbstractTestClass {
 
-		public abstract MethodsBuilderTest publicAbstractMethodBuilderTestMethod();
+		public abstract MethodTest publicAbstractMethodBuilderTestMethod();
 	}
 
 }

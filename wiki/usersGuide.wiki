@@ -1,4 +1,5 @@
 #summary Guide of how-to use the Jsigner project and jsigner maven plugin.
+#labels Featured
 
 = Introduction =
 

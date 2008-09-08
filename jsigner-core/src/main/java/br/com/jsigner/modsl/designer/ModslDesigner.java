@@ -27,12 +27,16 @@ import org.modsl.core.lang.uml.UMLMetaType;
 import org.modsl.core.lang.uml.UMLTranslator;
 import org.modsl.core.render.StyleLoader;
 
+import br.com.jsigner.JsignerConfiguration;
 import br.com.jsigner.designer.JsignerDesigner;
 import br.com.jsigner.diagram.ClassDiagram;
 import br.com.jsigner.interpreter.ClassDiagramVisitor;
+import br.com.jsigner.log.JsignerLog;
 import br.com.jsigner.modsl.interpreter.ModslClassDiagramVisitor;
 
 public class ModslDesigner extends JsignerDesigner {
+	
+	private static JsignerLog log = JsignerConfiguration.getLog();
 
 	@Override
 	public void design(ClassDiagram classDiagram, File outputFolder) {
@@ -46,7 +50,7 @@ public class ModslDesigner extends JsignerDesigner {
 			classDiagram.accept(visitor);
 			
 			String code = visitor.getResult();
-			System.out.println(code);
+			log.debug(code);
 			BufferedImage image = translator.translate(code);
 
 			String classDiagramPath = outputFolder.getAbsolutePath()
@@ -54,7 +58,7 @@ public class ModslDesigner extends JsignerDesigner {
 			File file = new File(classDiagramPath);
 			ImageIO.write(image, "png", file);
 			
-			System.out.println("Diagram finished: " + classDiagram.getName());
+			log.info("Diagram finished: " + classDiagram.getName());
 		} catch (RecognitionException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {

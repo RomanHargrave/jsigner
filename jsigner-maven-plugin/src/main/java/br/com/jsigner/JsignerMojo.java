@@ -22,7 +22,9 @@ import java.net.MalformedURLException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
+
+import br.com.jsigner.log.JsignerLog;
+import br.com.jsigner.log.LogAdapter;
 
 /**
  * @goal design
@@ -41,8 +43,9 @@ public class JsignerMojo extends AbstractMojo {
 	private File outputFolder;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		Log log = getLog();
 		checkPreConditions();
+
+		JsignerLog log = this.prepareLog();
 
 		try {
 			log.info("Executing Jsigner maven plugin on"
@@ -53,7 +56,11 @@ public class JsignerMojo extends AbstractMojo {
 				log.info("diagrams created at: "
 						+ outputFolder.getAbsolutePath());
 			} else {
-				System.out.println("jarsFolder" + jarsFolder.toString() + " doesn't exists, ignoring it...");
+				log
+						.error("jarsFolder"
+								+ jarsFolder.toString()
+								+ " doesn't exists! Specify it in the plugin configuration!");
+				throw new MojoExecutionException("invalid jarsFolder");
 			}
 		} catch (MalformedURLException e) {
 			throw new MojoExecutionException(e.getMessage(), e);
@@ -63,22 +70,28 @@ public class JsignerMojo extends AbstractMojo {
 	}
 
 	private void checkPreConditions() throws MojoFailureException {
+		JsignerLog log = JsignerConfiguration.getLog();
+
 		if (jarsFolder == null) {
-			throw new MojoFailureException("Variable outputFolder must be set, please verify the plugin configuration.");
+			throw new MojoFailureException(
+					"Variable outputFolder must be set, please verify the plugin configuration.");
 		}
 		if (!jarsFolder.exists()) {
-			throw new MojoFailureException("jarsFolder '"+ jarsFolder  +"' doesn't exists! Aborting execution, please verify the plugin configuration.");
+			throw new MojoFailureException(
+					"jarsFolder '"
+							+ jarsFolder
+							+ "' doesn't exists! Aborting execution, please verify the plugin configuration.");
 		}
 
 		if (outputFolder == null) {
-			throw new MojoFailureException("Variable jars folder must be set, please verify the plugin configuration.");
+			throw new MojoFailureException(
+					"Variable jars folder must be set, please verify the plugin configuration.");
 		}
 		if (!outputFolder.exists()) {
-			System.out
-					.println("outputFolder doesn't exists, trying to create it.");
+			log.info("outputFolder doesn't exists, trying to create it.");
 			boolean created = outputFolder.mkdir();
 			if (created) {
-				System.out.println("OutputFolder created!");
+				log.info("OutputFolder created!");
 			} else {
 				throw new RuntimeException("Can't create outputFolder!");
 			}
@@ -90,4 +103,11 @@ public class JsignerMojo extends AbstractMojo {
 		}
 	}
 
+	private JsignerLog prepareLog() {
+		LogAdapter logAdapter = new LogAdapter(getLog());
+		JsignerLog jsignerLog = JsignerConfiguration.getLog();
+		jsignerLog.registerObserver(logAdapter);
+
+		return jsignerLog;
+	}
 }

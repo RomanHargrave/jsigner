@@ -40,7 +40,15 @@ public class MethodSpecification {
 			isMethod = isMethod && !method.getName().startsWith("get")
 					&& !method.getName().startsWith("is");
 		}
-		
+
+		if (JsignerConfiguration.hideEquals()) {
+			isMethod = isMethod && !method.getName().startsWith("equals");
+		}
+
+		if (JsignerConfiguration.hideHashcode()) {
+			isMethod = isMethod && !method.getName().startsWith("hashCode");
+		}
+
 		return isMethod;
 	}
 }

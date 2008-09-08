@@ -19,11 +19,13 @@ package br.com.jsigner;
 import br.com.jsigner.designer.JsignerDesigner;
 import br.com.jsigner.diagram.elements.relationship.multiplicity.PersistenceMultiplicityFinder;
 import br.com.jsigner.diagram.elements.relationship.multiplicity.RelationshipMultiplicityFinder;
+import br.com.jsigner.log.JsignerLog;
 import br.com.jsigner.modsl.designer.ModslDesigner;
 
 public abstract class JsignerConfiguration {
 
 	private static RelationshipMultiplicityFinder configuredFinder = new PersistenceMultiplicityFinder();
+	private static JsignerLog log = new JsignerLog();
 
 	public static RelationshipMultiplicityFinder getMultiplicityFinder() {
 		return configuredFinder;
@@ -46,8 +48,20 @@ public abstract class JsignerConfiguration {
 		return true;
 	}
 	
-	public static JsignerDesigner getJsignerDrawwer() {
+	public static boolean hideEquals() {
+		return true;
+	}
+	
+	public static boolean hideHashcode() {
+		return true;
+	}
+	
+	public static JsignerDesigner getJsignerDesigner() {
 		return new ModslDesigner();
+	}
+	
+	public static JsignerLog getLog() {
+		return log;
 	}
 
 }

@@ -23,6 +23,8 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
+import br.com.jsigner.diagram.elements.relationship.multiplicity.CollectionMultiplicityFinder;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.PersistenceMultiplicityFinder;
 import br.com.jsigner.log.JsignerLog;
 import br.com.jsigner.log.LogAdapter;
 
@@ -42,8 +44,44 @@ public class JsignerMojo extends AbstractMojo {
 	 */
 	private File outputFolder;
 
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean discoverMultiplicityByPersistenceAnnotations;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hidePrivateMethods;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hideSetters;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hideGetters;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hideEquals;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hideHashcode;
+	
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hideSerialVersion;
+
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		checkPreConditions();
+		configurePlugin();
 
 		JsignerLog log = this.prepareLog();
 
@@ -66,6 +104,25 @@ public class JsignerMojo extends AbstractMojo {
 			throw new MojoExecutionException(e.getMessage(), e);
 		} catch (RuntimeException e) {
 			throw new MojoExecutionException(e.getMessage(), e);
+		}
+	}
+
+	private void configurePlugin() {
+		//Methods configuration
+		JsignerConfiguration.setHideEquals(hideEquals);
+		JsignerConfiguration.setHideGetters(hideGetters);
+		JsignerConfiguration.setHideHashcode(hideHashcode);
+		JsignerConfiguration.setHidePrivateMethods(hidePrivateMethods);
+		JsignerConfiguration.setHideSetters(hideSetters);
+		
+		//Attribute configuration
+		JsignerConfiguration.setHideSerialVersion(hideSerialVersion);
+		
+		//relationship configuration
+		if (discoverMultiplicityByPersistenceAnnotations) {
+			JsignerConfiguration.setMultiplicityFinder(new PersistenceMultiplicityFinder());
+		} else {
+			JsignerConfiguration.setMultiplicityFinder(new CollectionMultiplicityFinder());
 		}
 	}
 

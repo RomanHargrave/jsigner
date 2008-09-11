@@ -19,6 +19,7 @@ package br.com.jsigner.diagram.elements.attribute;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import br.com.jsigner.JsignerConfiguration;
 import br.com.jsigner.diagram.elements.relationship.RelationshipSpecification;
 
 public class AttributeSpecification {
@@ -27,11 +28,14 @@ public class AttributeSpecification {
 			Field field) {
 		RelationshipSpecification relationshipSpecification = new RelationshipSpecification();
 		
-		//TODO Aplicar regras configuraveis
-		return !relationshipSpecification.isRelationship(clazz, classesNames,
-				field)
-				&& !field.getName().equals("serialVersionUID")
-				&& !field.getName().contains("$");
+		boolean result = !relationshipSpecification.isRelationship(clazz, classesNames,
+				field) && !field.getName().contains("$");
+		
+		if (JsignerConfiguration.hideSerialVersion()) {
+			result = result && !field.getName().equals("serialVersionUID");
+		}
+			
+		return result; 
 	}
 
 }

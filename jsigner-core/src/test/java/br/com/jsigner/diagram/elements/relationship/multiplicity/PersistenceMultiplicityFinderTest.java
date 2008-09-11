@@ -90,19 +90,14 @@ public class PersistenceMultiplicityFinderTest {
 
 	private static class TestClass {
 
-		@SuppressWarnings("unused")
 		@OneToOne
 		private TestClass oneToOne;
-
-		@SuppressWarnings("unused")
 		@OneToMany
 		private TestClass oneToMany;
 
-		@SuppressWarnings("unused")
 		@ManyToMany
 		private TestClass manyToMany;
 
-		@SuppressWarnings("unused")
 		@ManyToOne
 		private TestClass manyToOne;
 

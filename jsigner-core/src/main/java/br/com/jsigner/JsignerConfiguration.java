@@ -27,6 +27,70 @@ public abstract class JsignerConfiguration {
 	private static RelationshipMultiplicityFinder configuredFinder = new PersistenceMultiplicityFinder();
 	private static JsignerLog log = new JsignerLog();
 
+	/**
+	 * Methods configuration
+	 */
+	private static boolean hidePrivateMethods;
+	private static boolean hideSetters;
+	private static boolean hideGetters;
+	private static boolean hideEquals;
+	private static boolean hideHashcode;
+	
+	/**
+	 * Attributes configuration
+	 */
+	private static boolean hideSerialVersion;
+	
+
+	public static boolean hideSerialVersion() {
+		return hideSerialVersion;
+	}
+
+	public static void setHideSerialVersion(boolean hideSerialVersion) {
+		JsignerConfiguration.hideSerialVersion = hideSerialVersion;
+	}
+
+	public static boolean hidePrivateMethods() {
+		return hidePrivateMethods;
+	}
+
+	public static void setHidePrivateMethods(boolean hidePrivateMethods) {
+		JsignerConfiguration.hidePrivateMethods = hidePrivateMethods;
+	}
+
+	public static boolean hideSetters() {
+		return hideSetters;
+	}
+
+	public static void setHideSetters(boolean hideSetters) {
+		JsignerConfiguration.hideSetters = hideSetters;
+	}
+
+	public static boolean hideGetters() {
+		return hideGetters;
+	}
+
+	public static void setHideGetters(boolean hideGetters) {
+		JsignerConfiguration.hideGetters = hideGetters;
+	}
+
+	public static boolean hideEquals() {
+		return hideEquals;
+	}
+
+	public static void setHideEquals(boolean hideEquals) {
+		JsignerConfiguration.hideEquals = hideEquals;
+	}
+
+	public static boolean hideHashcode() {
+		return hideHashcode;
+	}
+
+	public static void setHideHashcode(boolean hideHashcode) {
+		JsignerConfiguration.hideHashcode = hideHashcode;
+	}
+
+
 	public static RelationshipMultiplicityFinder getMultiplicityFinder() {
 		return configuredFinder;
 	}
@@ -36,30 +100,10 @@ public abstract class JsignerConfiguration {
 		configuredFinder = multiplicityFinder;
 	}
 
-	public static boolean hidePrivateMethods() {
-		return true;
-	}
-
-	public static boolean hideSetters() {
-		return true;
-	}
-
-	public static boolean hideGetters() {
-		return true;
-	}
-	
-	public static boolean hideEquals() {
-		return true;
-	}
-	
-	public static boolean hideHashcode() {
-		return true;
-	}
-	
 	public static JsignerDesigner getJsignerDesigner() {
 		return new ModslDesigner();
 	}
-	
+
 	public static JsignerLog getLog() {
 		return log;
 	}

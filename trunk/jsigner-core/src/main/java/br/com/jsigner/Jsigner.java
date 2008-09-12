@@ -57,6 +57,11 @@ public final class Jsigner {
 					Domain.class.getName());
 
 			List<Class<?>> diagramClasses = new ArrayList<Class<?>>();
+			
+			if (classes == null) {
+				log.error("No @Domain annotations found, aborting execution!");
+				throw new RuntimeException("No @Domain annotations found, aborting execution!");
+			}
 			Iterator<String> iterator = classes.iterator();
 
 			log.info("Starting loading classes");

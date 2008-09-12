@@ -73,7 +73,7 @@ public class JsignerMojo extends AbstractMojo {
 	 * @parameter default-value="true"
 	 */
 	private boolean hideHashcode;
-	
+
 	/**
 	 * @parameter default-value="true"
 	 */
@@ -108,21 +108,27 @@ public class JsignerMojo extends AbstractMojo {
 	}
 
 	private void configurePlugin() {
-		//Methods configuration
+		// Methods configuration
+
 		JsignerConfiguration.setHideEquals(hideEquals);
 		JsignerConfiguration.setHideGetters(hideGetters);
 		JsignerConfiguration.setHideHashcode(hideHashcode);
 		JsignerConfiguration.setHidePrivateMethods(hidePrivateMethods);
 		JsignerConfiguration.setHideSetters(hideSetters);
-		
-		//Attribute configuration
+
+		// Attribute configuration
 		JsignerConfiguration.setHideSerialVersion(hideSerialVersion);
-		
-		//relationship configuration
+
+		// relationship configuration
 		if (discoverMultiplicityByPersistenceAnnotations) {
-			JsignerConfiguration.setMultiplicityFinder(new PersistenceMultiplicityFinder());
+			JsignerConfiguration.getLog().debug(
+					"Setting discoverMultiplicityByPersistenceAnnotations to:"
+							+ discoverMultiplicityByPersistenceAnnotations);
+			JsignerConfiguration
+					.setMultiplicityFinder(new PersistenceMultiplicityFinder());
 		} else {
-			JsignerConfiguration.setMultiplicityFinder(new CollectionMultiplicityFinder());
+			JsignerConfiguration
+					.setMultiplicityFinder(new CollectionMultiplicityFinder());
 		}
 	}
 

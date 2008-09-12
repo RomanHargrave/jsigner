@@ -47,6 +47,7 @@ public abstract class JsignerConfiguration {
 	}
 
 	public static void setHideSerialVersion(boolean hideSerialVersion) {
+		log.debug("Setting hideSerialVersion to :" + hideEquals);
 		JsignerConfiguration.hideSerialVersion = hideSerialVersion;
 	}
 
@@ -55,6 +56,7 @@ public abstract class JsignerConfiguration {
 	}
 
 	public static void setHidePrivateMethods(boolean hidePrivateMethods) {
+		log.debug("Setting hideSerialVersion to :" + hidePrivateMethods);
 		JsignerConfiguration.hidePrivateMethods = hidePrivateMethods;
 	}
 
@@ -63,6 +65,7 @@ public abstract class JsignerConfiguration {
 	}
 
 	public static void setHideSetters(boolean hideSetters) {
+		log.debug("Setting hideSerialVersion to :" + hideSetters);
 		JsignerConfiguration.hideSetters = hideSetters;
 	}
 
@@ -71,6 +74,7 @@ public abstract class JsignerConfiguration {
 	}
 
 	public static void setHideGetters(boolean hideGetters) {
+		log.debug("Setting hideSerialVersion to :" + hideGetters);
 		JsignerConfiguration.hideGetters = hideGetters;
 	}
 
@@ -79,6 +83,7 @@ public abstract class JsignerConfiguration {
 	}
 
 	public static void setHideEquals(boolean hideEquals) {
+		log.debug("Setting hideEquals to :" + hideEquals);
 		JsignerConfiguration.hideEquals = hideEquals;
 	}
 
@@ -87,6 +92,7 @@ public abstract class JsignerConfiguration {
 	}
 
 	public static void setHideHashcode(boolean hideHashcode) {
+		log.debug("Setting hideSerialVersion to :" + hideHashcode);
 		JsignerConfiguration.hideHashcode = hideHashcode;
 	}
 

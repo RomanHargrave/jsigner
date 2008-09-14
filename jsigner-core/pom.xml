@@ -30,8 +30,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.modsl</groupId>
-			<artifactId>modsl-core</artifactId>
-			<version>0.6-SNAPSHOT</version>
+			<artifactId>modsl-jsigner-core</artifactId>
+			<version>0.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>

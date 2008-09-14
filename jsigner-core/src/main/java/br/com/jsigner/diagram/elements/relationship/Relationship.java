@@ -22,10 +22,11 @@ import java.util.List;
 
 import br.com.jsigner.JsignerConfiguration;
 import br.com.jsigner.diagram.ClassDiagram;
-import br.com.jsigner.diagram.elements.relationship.multiplicity.ImpossibleDefineMultiplicityException;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.CollectionMultiplicityFinder;
 import br.com.jsigner.diagram.elements.relationship.multiplicity.Multiplicity;
 import br.com.jsigner.diagram.elements.relationship.multiplicity.RelationshipMultiplicityFinder;
 import br.com.jsigner.interpreter.RelationshipVisitor;
+import br.com.jsigner.log.JsignerLog;
 
 public class Relationship {
 
@@ -46,19 +47,20 @@ public class Relationship {
 
 	private void setup(Class<?> root, Field field) {
 		this.rootClassName = root.getSimpleName();
-		this.discoverMultiplicity(root, field);
-
+		
 		if (this.isGeneric(field)) {
 			String fieldName = field.getGenericType().toString();
 			this.targetClassName = fieldName.substring(fieldName
 					.lastIndexOf(".") + 1, fieldName.length() - 1);
-			
-			//Skips inner classes
+
+			// Skips inner classes
 			this.targetClassName = targetClassName.substring(targetClassName
 					.lastIndexOf("$") + 1, targetClassName.length());
 		} else {
 			this.targetClassName = field.getType().getSimpleName();
 		}
+		
+		this.discoverMultiplicity(root, field);
 	}
 
 	private boolean isGeneric(Field field) {
@@ -89,8 +91,13 @@ public class Relationship {
 
 				multiplicity = multiplicityFinder
 						.findRelationshipMultiplicity(getter);
+				
 				if (multiplicity == null) {
-					throw new ImpossibleDefineMultiplicityException(root, field);
+					multiplicityFinder = new CollectionMultiplicityFinder();
+					JsignerLog log = JsignerConfiguration.getLog();
+					log.info("Could not define multiplicity for relationship " + this.toString()
+							+ " with persistence annotations. The multiplicity will be defined based on collections.");
+					multiplicity = multiplicityFinder.findRelationshipMultiplicity(field);
 				}
 			}
 			this.multiplicity = multiplicity;
@@ -125,4 +132,10 @@ public class Relationship {
 	public void setTargetClassName(String targetClassName) {
 		this.targetClassName = targetClassName;
 	}
+
+	@Override
+	public String toString() {
+		return rootClassName + "->" + targetClassName;
+	}
+
 }

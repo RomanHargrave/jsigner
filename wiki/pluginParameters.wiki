@@ -1,4 +1,5 @@
 #summary How-to customize the diagrams generation
+#labels Featured
 
 == Introduction ==
 Jsigner diagrams can be configured to fit your needs. This is done by setting some parameters in the plugin configuration.

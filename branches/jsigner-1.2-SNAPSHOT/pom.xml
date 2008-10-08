@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.jsigner</groupId>
     <artifactId>jsigner</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
     <name>Jsigner</name>
     <packaging>pom</packaging>
     
@@ -51,27 +51,16 @@
     </repositories>
     
     <pluginRepositories>
-        
         <pluginRepository>
-            
             <id>mc-release</id>
-            
             <url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
-            
             <snapshots>
-                
                 <enabled>false</enabled>
-                
             </snapshots>
-            
             <releases>
-                
                 <enabled>true</enabled>
-                
             </releases>
-            
         </pluginRepository>
-        
     </pluginRepositories>
     
     <build>
@@ -85,31 +74,18 @@
                 </configuration>
             </plugin>
             <plugin>
-                
                 <groupId>com.google.code.maven-license-plugin</groupId>
-                
                 <artifactId>maven-license-plugin</artifactId>
-                
                 <configuration>
-                    
                     <header>license-header.txt</header>
-                    
                     <failIfMissing>true</failIfMissing>
-                    
                     <includes>
-                        
                         <include>src/main/java/**</include>
-                        
                         <include>src/test/java/**</include>
-                        
                     </includes>
-                    
                     <excludes>
-                        
                         <exclude>target/**</exclude>
-                        
                     </excludes>
-                    
                 </configuration>
                 <executions>
                     <execution>
@@ -118,11 +94,8 @@
                         </goals>
                     </execution>
                 </executions>
-                
             </plugin>
-            
         </plugins>
     </build>
 </project>
-
 

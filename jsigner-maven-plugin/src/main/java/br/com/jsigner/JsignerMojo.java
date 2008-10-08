@@ -18,15 +18,22 @@ package br.com.jsigner;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 
 import br.com.jsigner.diagram.elements.relationship.multiplicity.CollectionMultiplicityFinder;
 import br.com.jsigner.diagram.elements.relationship.multiplicity.PersistenceMultiplicityFinder;
 import br.com.jsigner.log.JsignerLog;
 import br.com.jsigner.log.LogAdapter;
+import br.com.jsigner.scanner.JarScanner;
 
 /**
  * @goal design
@@ -79,6 +86,13 @@ public class JsignerMojo extends AbstractMojo {
 	 */
 	private boolean hideSerialVersion;
 
+	/**
+	 * @parameter expression="${project}"
+	 * @required
+	 * @readonly
+	 */
+	private MavenProject project;
+
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		checkPreConditions();
 		configurePlugin();
@@ -86,20 +100,18 @@ public class JsignerMojo extends AbstractMojo {
 		JsignerLog log = this.prepareLog();
 
 		try {
-			log.info("Executing Jsigner maven plugin on"
-					+ jarsFolder.getAbsolutePath());
-
-			if (jarsFolder.exists()) {
-				Jsigner.design(jarsFolder, outputFolder);
-				log.info("diagrams created at: "
-						+ outputFolder.getAbsolutePath());
+			URL[] urls;
+			if (jarsFolder != null) {
+				log.info("Executing Jsigner maven plugin on "
+						+ jarsFolder.getAbsolutePath());
+				urls = generateURLs(jarsFolder, log);
 			} else {
-				log
-						.error("jarsFolder"
-								+ jarsFolder.toString()
-								+ " doesn't exists! Specify it in the plugin configuration!");
-				throw new MojoExecutionException("invalid jarsFolder");
+				log.info("Executing Jsigner maven plugin on classpath");
+				urls = loadURLsFromCLasspath(project, log);
 			}
+
+			Jsigner.design(urls, outputFolder);
+			log.info("diagrams created at: " + outputFolder.getAbsolutePath());
 		} catch (MalformedURLException e) {
 			throw new MojoExecutionException(e.getMessage(), e);
 		} catch (RuntimeException e) {
@@ -135,10 +147,6 @@ public class JsignerMojo extends AbstractMojo {
 	private void checkPreConditions() throws MojoFailureException {
 		JsignerLog log = JsignerConfiguration.getLog();
 
-		if (jarsFolder == null) {
-			throw new MojoFailureException(
-					"Variable outputFolder must be set, please verify the plugin configuration.");
-		}
 		if (!jarsFolder.exists()) {
 			throw new MojoFailureException(
 					"jarsFolder '"
@@ -148,7 +156,7 @@ public class JsignerMojo extends AbstractMojo {
 
 		if (outputFolder == null) {
 			throw new MojoFailureException(
-					"Variable jars folder must be set, please verify the plugin configuration.");
+					"Variable outputFolder must be set, please verify the plugin configuration.");
 		}
 		if (!outputFolder.exists()) {
 			log.info("outputFolder doesn't exists, trying to create it.");
@@ -172,5 +180,56 @@ public class JsignerMojo extends AbstractMojo {
 		jsignerLog.registerObserver(logAdapter);
 
 		return jsignerLog;
+	}
+
+	private URL[] generateURLs(File f, JsignerLog log)
+			throws MalformedURLException {
+		JarScanner scanner = new JarScanner();
+		Set<File> jars = scanner.scan(f);
+		removeDuplicatedJars(jars, log);
+
+		URL[] urls = new URL[jars.size()];
+		int count = 0;
+		for (File file : jars) {
+			urls[count] = file.toURI().toURL();
+			log.debug("adding jar for scanning: " + urls[count]);
+			count++;
+		}
+
+		return urls;
+	}
+
+	private void removeDuplicatedJars(Set<File> jars, JsignerLog log) {
+		Set<String> jarNames = new HashSet<String>();
+		for (File file : jars) {
+			if (jarNames.contains(file.getName())) {
+				log.debug("Skiping duplicated jar:" + file.getName());
+				jars.remove(file);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private URL[] loadURLsFromCLasspath(MavenProject project, JsignerLog log)
+			throws MalformedURLException {
+		Set<File> fileSet = new HashSet<File>();
+
+		Iterator i = project.getArtifacts().iterator();
+		while (i.hasNext()) {
+			Artifact artifact = (Artifact) i.next();
+			fileSet.add(artifact.getFile());
+		}
+
+		removeDuplicatedJars(fileSet, log);
+
+		URL[] urls = new URL[fileSet.size()];
+		int count = 0;
+		for (File file : fileSet) {
+			urls[count] = file.toURI().toURL();
+			log.debug("adding jar for scanning: " + urls[count]);
+			count++;
+		}
+
+		return urls;
 	}
 }

@@ -23,7 +23,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -35,16 +34,13 @@ import br.com.jsigner.designer.JsignerDesigner;
 import br.com.jsigner.diagram.ClassDiagram;
 import br.com.jsigner.diagram.DiagramBuilder;
 import br.com.jsigner.log.JsignerLog;
-import br.com.jsigner.scanner.JarScanner;
 
 public final class Jsigner {
-	
+
 	private static JsignerLog log = JsignerConfiguration.getLog();
 
-	public static void design(File f, File outputFolder)
+	public static void design(URL[] urls, File outputFolder)
 			throws MalformedURLException {
-		URL[] urls = generateURLs(f);
-
 		AnnotationDB db = new AnnotationDB();
 		try {
 			db.setScanClassAnnotations(true);
@@ -57,10 +53,11 @@ public final class Jsigner {
 					Domain.class.getName());
 
 			List<Class<?>> diagramClasses = new ArrayList<Class<?>>();
-			
+
 			if (classes == null) {
 				log.error("No @Domain annotations found, aborting execution!");
-				throw new RuntimeException("No @Domain annotations found, aborting execution!");
+				throw new RuntimeException(
+						"No @Domain annotations found, aborting execution!");
 			}
 			Iterator<String> iterator = classes.iterator();
 
@@ -75,9 +72,10 @@ public final class Jsigner {
 			}
 
 			log.info(diagramClasses.size() + " Classes loaded");
-			
+
 			if (diagramClasses.size() == 0) {
-				throw new RuntimeException("Aborting execution, 0 classes found!");
+				throw new RuntimeException(
+						"Aborting execution, 0 classes found!");
 			}
 
 			DiagramBuilder builder = new DiagramBuilder();
@@ -97,31 +95,4 @@ public final class Jsigner {
 			e.printStackTrace();
 		}
 	}
-
-	private static URL[] generateURLs(File f) throws MalformedURLException {
-		JarScanner scanner = new JarScanner();
-		Set<File> jars = scanner.scan(f);
-		removeDuplicatedJars(jars);
-
-		URL[] urls = new URL[jars.size()];
-		int count = 0;
-		for (File file : jars) {
-			urls[count] = file.toURI().toURL();
-			log.debug("adding jar for scanning: " + urls[count]);
-			count++;
-		}
-
-		return urls;
-	}
-
-	private static void removeDuplicatedJars(Set<File> jars) {
-		Set<String> jarNames = new HashSet<String>();
-		for (File file : jars) {
-			if (jarNames.contains(file.getName())) {
-				log.debug("Skiping duplicated jar:" + file.getName());
-				jars.remove(file);
-			}
-		}
-	}
-
 }

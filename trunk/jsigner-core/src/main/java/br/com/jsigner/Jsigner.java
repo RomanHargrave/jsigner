@@ -16,7 +16,6 @@
 
 package br.com.jsigner;
 
-import java.net.MalformedURLException;
 import java.util.List;
 
 import br.com.jsigner.designer.JsignerDesigner;
@@ -24,8 +23,7 @@ import br.com.jsigner.diagram.ClassDiagram;
 
 public final class Jsigner {
 
-	public void design(String diagramName, List<Class<?>> diagramClasses)
-			throws MalformedURLException {
+	public void design(String diagramName, List<Class<?>> diagramClasses) {
 
 		JsignerDesigner designer = JsignerConfiguration.getJsignerDesigner();
 		ClassDiagram diagram = new ClassDiagram(diagramName, diagramClasses);

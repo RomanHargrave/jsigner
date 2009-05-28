@@ -28,8 +28,11 @@ public class ClassDiagram {
 	private List<Clazz> classes = new ArrayList<Clazz>();
 	private List<String> classesNames = new ArrayList<String>();
 
-	public ClassDiagram(String diagramName) {
+	public ClassDiagram(String diagramName, List<Class<?>> classes) {
 		this.name = diagramName;
+		for (Class<?> class1 : classes) {
+			this.addClass(class1);
+		}
 	}
 
 	public void addClass(Class<?> clazz) {

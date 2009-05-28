@@ -16,17 +16,17 @@
 
 package br.com.jsigner.designer;
 
-import java.io.File;
+import java.awt.image.BufferedImage;
 
 import br.com.jsigner.diagram.ClassDiagram;
 import br.com.jsigner.diagram.elements.relationship.RelationshipRepository;
 
 public abstract class JsignerDesigner {
 
-	public void execute(ClassDiagram classDiagram, File outputFolder) {
+	public BufferedImage generateDiagramImage(ClassDiagram classDiagram) {
 		RelationshipRepository.init();
-		this.design(classDiagram, outputFolder);
+		return this.generateImage(classDiagram);
 	}
 
-	public abstract void design(ClassDiagram classDiagram, File outputFolder);
+	protected abstract BufferedImage generateImage(ClassDiagram classDiagram);
 }

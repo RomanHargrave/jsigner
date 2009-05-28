@@ -13,6 +13,7 @@
 		<module>jsigner-annotations</module>
 		<module>jsigner-core</module>
 		<module>jsigner-maven-plugin</module>
+		<module>jsigner-ui</module>
 	</modules>
 	
 	<scm>

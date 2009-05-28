@@ -17,7 +17,6 @@
 package br.com.jsigner;
 
 import java.io.File;
-import java.net.MalformedURLException;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -83,28 +82,30 @@ public class JsignerMojo extends AbstractMojo {
 		checkPreConditions();
 		configurePlugin();
 
-		JsignerLog log = this.prepareLog();
-
-		try {
-			log.info("Executing Jsigner maven plugin on"
-					+ jarsFolder.getAbsolutePath());
-
-			if (jarsFolder.exists()) {
-				Jsigner.design(jarsFolder, outputFolder);
-				log.info("diagrams created at: "
-						+ outputFolder.getAbsolutePath());
-			} else {
-				log
-						.error("jarsFolder"
-								+ jarsFolder.toString()
-								+ " doesn't exists! Specify it in the plugin configuration!");
-				throw new MojoExecutionException("invalid jarsFolder");
-			}
-		} catch (MalformedURLException e) {
-			throw new MojoExecutionException(e.getMessage(), e);
-		} catch (RuntimeException e) {
-			throw new MojoExecutionException(e.getMessage(), e);
-		}
+//		JsignerLog log = this.prepareLog();
+//
+//		try {
+//			log.info("Executing Jsigner maven plugin on"
+//					+ jarsFolder.getAbsolutePath());
+//
+//			if (jarsFolder.exists()) {
+//				
+//				Jsigner jsigner = new Jsigner();
+//				jsigner.design(jarsFolder, outputFolder);
+//				log.info("diagrams created at: "
+//						+ outputFolder.getAbsolutePath());
+//			} else {
+//				log
+//						.error("jarsFolder"
+//								+ jarsFolder.toString()
+//								+ " doesn't exists! Specify it in the plugin configuration!");
+//				throw new MojoExecutionException("invalid jarsFolder");
+//			}
+//		} catch (MalformedURLException e) {
+//			throw new MojoExecutionException(e.getMessage(), e);
+//		} catch (RuntimeException e) {
+//			throw new MojoExecutionException(e.getMessage(), e);
+//		}
 	}
 
 	private void configurePlugin() {

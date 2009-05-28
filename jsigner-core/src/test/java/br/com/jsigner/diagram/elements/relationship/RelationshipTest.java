@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 
 import org.easymock.EasyMock;
@@ -35,6 +36,7 @@ import br.com.jsigner.modsl.interpreter.ModslRelationshipVisitor;
 
 public class RelationshipTest {
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void relationshipTest() throws Exception {
 		RelationshipMultiplicityFinder multiplicityFinder = EasyMock
@@ -52,9 +54,7 @@ public class RelationshipTest {
 		
 		JsignerConfiguration.setMultiplicityFinder(multiplicityFinder);
 		Field field = Car.class.getDeclaredField("engine");
-		ClassDiagram diagram = new ClassDiagram("testDiagram");
-		diagram.getClassesNames().add(Car.class.getName());
-		diagram.getClassesNames().add(Engine.class.getName());
+		ClassDiagram diagram = new ClassDiagram("testDiagram", Arrays.asList(Car.class, Engine.class));
 
 		Relationship relationship = new Relationship(new Car().getClass(), field, diagram);
 		Relationship relationship2 = new Relationship(new Car().getClass(), field, diagram);

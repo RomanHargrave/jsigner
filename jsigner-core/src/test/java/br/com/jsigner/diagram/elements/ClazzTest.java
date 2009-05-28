@@ -19,6 +19,9 @@ package br.com.jsigner.diagram.elements;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import br.com.jsigner.diagram.ClassDiagram;
@@ -30,8 +33,11 @@ public class ClazzTest {
 
 	@Test
 	public void classTest() throws Exception {
-		ClassDiagram diagram = new ClassDiagram("test");
-		diagram.getClassesNames().add(RelationshipTest.Engine.class.getName());
+		List<Class<?>> classes = new ArrayList<Class<?>>();
+		classes.add(RelationshipTest.Engine.class);
+		
+		ClassDiagram diagram = new ClassDiagram("test", classes);
+		
 		Clazz clazz = new Clazz(RelationshipTest.Car.class, diagram);
 
 		ClazzVisitor visitor = new ModslClazzVisitor();

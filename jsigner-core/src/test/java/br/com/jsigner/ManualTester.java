@@ -23,11 +23,13 @@ import org.junit.Test;
 
 public class ManualTester {
 	
-	@Test
+	//@Test
 	public void execute() throws MalformedURLException {
 		File file = new File("/home/rafael/desenvolvimento/projetos/cqa_lims/devel/implementation/ear");
 		
 		File outputFolder = new File("/home/rafael/diagramas/");
-		Jsigner.design(file, outputFolder);
+		Jsigner jsigner = new Jsigner();
+		//jsigner.design(file, outputFolder);
+		
 	}
 }

@@ -17,10 +17,6 @@
 package br.com.jsigner.modsl.designer;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import org.antlr.runtime.RecognitionException;
 import org.modsl.core.lang.uml.UMLMetaType;
@@ -39,7 +35,7 @@ public class ModslDesigner extends JsignerDesigner {
 	private static JsignerLog log = JsignerConfiguration.getLog();
 
 	@Override
-	public void design(ClassDiagram classDiagram, File outputFolder) {
+	public BufferedImage generateImage(ClassDiagram classDiagram) {
 		StyleLoader stl = new StyleLoader();
 		stl.load("cfg/uml:cfg", "uml", UMLMetaType.class);
 
@@ -52,18 +48,11 @@ public class ModslDesigner extends JsignerDesigner {
 			String code = visitor.getResult();
 			log.debug(code);
 			BufferedImage image = translator.translate(code);
-
-			String classDiagramPath = outputFolder.getAbsolutePath()
-					+ File.separator + classDiagram.getName() + ".png";
-			File file = new File(classDiagramPath);
-			ImageIO.write(image, "png", file);
-			
-			log.info("Diagram finished: " + classDiagram.getName());
+			log.info("Diagram generated: " + classDiagram.getName());
+			return image;
 		} catch (RecognitionException e) {
 			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		} 
 	}
 
 

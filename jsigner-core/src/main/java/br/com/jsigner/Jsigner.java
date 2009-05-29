@@ -16,6 +16,7 @@
 
 package br.com.jsigner;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import br.com.jsigner.designer.JsignerDesigner;
@@ -23,10 +24,10 @@ import br.com.jsigner.diagram.ClassDiagram;
 
 public final class Jsigner {
 
-	public void design(String diagramName, List<Class<?>> diagramClasses) {
+    public BufferedImage design(String diagramName, List<Class<?>> diagramClasses) {
 
-		JsignerDesigner designer = JsignerConfiguration.getJsignerDesigner();
-		ClassDiagram diagram = new ClassDiagram(diagramName, diagramClasses);
-		designer.generateDiagramImage(diagram);
-	}
+        JsignerDesigner designer = JsignerConfiguration.getJsignerDesigner();
+        ClassDiagram diagram = new ClassDiagram(diagramName, diagramClasses);
+        return designer.generateDiagramImage(diagram);
+    }
 }

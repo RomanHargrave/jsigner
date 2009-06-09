@@ -1,0 +1,98 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.jsigner</groupId>
+	<artifactId>jsigner</artifactId>
+	<version>1.2</version>
+	<name>Jsigner</name>
+	<packaging>pom</packaging>
+	 
+	<modules>
+		<module>jsigner-annotations</module>
+		<module>jsigner-core</module>
+		<module>jsigner-maven-plugin</module>
+		<module>jsigner-ui</module>
+	</modules>
+	
+	<scm>
+		<connection>scm:svn:http://jsigner.googlecode.com/svn/tags/jsigner-1.2</connection>
+		<developerConnection>scm:svn:https://jsigner.googlecode.com/svn/tags/jsigner-1.2</developerConnection>
+		<url>http://code.google.com/p/jsigner/source/browse/tags/jsigner-1.2</url>
+  	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>2.0</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+            <id>jsigner</id>
+            <name>JSIGNER MAVEN2 REPOSITORY</name>
+            <url>http://jsigner.googlecode.com/svn/maven2/repository</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+        <pluginRepository>
+            <id>mc-release</id>
+            <url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.code.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+				    <header>license-header.txt</header>
+				    <failIfMissing>true</failIfMissing>
+				    <includes>
+					<include>src/main/java/**</include>
+					<include>src/test/java/**</include>
+				    </includes>
+				    <excludes>
+					<exclude>target/**</exclude>
+				    </excludes>
+				</configuration>
+					<executions>
+					    <execution>
+						<goals>
+						    <goal>check</goal>
+						</goals>
+					    </execution>
+				    </executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

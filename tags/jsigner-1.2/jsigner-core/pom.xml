@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>br.com.jsigner</groupId>
+	<artifactId>jsigner-core</artifactId>
+	<version>1.2</version>
+	<name>Jsigner Core</name>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>br.com.jsigner</groupId>
+		<artifactId>jsigner</artifactId>
+	<version>1.2</version>
+	</parent>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>br.com.jsigner</groupId>
+			<artifactId>jsigner-annotations</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.scannotation</groupId>
+			<artifactId>scannotation</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.modsl</groupId>
+			<artifactId>modsl-jsigner-core</artifactId>
+			<version>0.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		 
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+			<version>3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>stringtemplate</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>antlr</groupId>
+			<artifactId>antlr</artifactId>
+			<version>2.7.7</version>
+		</dependency>
+	</dependencies>
+</project>

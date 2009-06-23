@@ -43,6 +43,11 @@ import org.apache.maven.shared.dependency.tree.DependencyNode;
 import org.apache.maven.shared.dependency.tree.DependencyTreeBuilder;
 import org.apache.maven.shared.dependency.tree.DependencyTreeBuilderException;
 
+import br.com.jsigner.JsignerConfiguration;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.CollectionMultiplicityFinder;
+import br.com.jsigner.diagram.elements.relationship.multiplicity.PersistenceMultiplicityFinder;
+import br.com.jsigner.log.JsignerLog;
+
 /**
  * @goal generate
  * @aggregator
@@ -108,10 +113,6 @@ public class JsignerGenerateMojo extends AbstractMojo {
      */
     private Set<String> packs;
 
-    /**
-     * @parameter expression="${basedir}/target/jsigner"
-     */
-    private File dest;
 
     /**
      * Map of of plugin artifacts.
@@ -121,12 +122,55 @@ public class JsignerGenerateMojo extends AbstractMojo {
      * @readonly
      */
     private Map<String, Artifact> pluginArtifactMap;
+    
+    /**
+     * @parameter expression="${basedir}/target/jsigner"
+     */
+	private File outputFolder;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean discoverMultiplicityByPersistenceAnnotations;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hidePrivateMethods;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hideSetters;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hideGetters;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hideEquals;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hideHashcode;
+
+	/**
+	 * @parameter default-value="true"
+	 */
+	private boolean hideSerialVersion;
 
     public JsignerGenerateMojo() {
         this.packs = new TreeSet<String>(Arrays.asList("jar", "ejb", "war"));
     }
 
     public void execute() throws MojoExecutionException, MojoFailureException {
+    	checkPreConditions();
+		configurePlugin();
+    	
         List<File> projects = new ArrayList<File>();
         List<File> classpath = getClasspath(projects);
         classpath.addAll(getJsignerDependencies());
@@ -154,7 +198,7 @@ public class JsignerGenerateMojo extends AbstractMojo {
             urls = new ArrayList<URL>(new HashSet<URL>(urls));
             getLog().info("Creating classloader for: " + urls);
             ClassLoader loader = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]));
-            JsignerRunner runner = new JsignerRunner(getLog(), loader, projects, dest);
+            JsignerRunner runner = new JsignerRunner(getLog(), loader, projects, outputFolder);
             runner.start();
             runner.join();
             Throwable throwable = runner.getThrowable();
@@ -162,25 +206,6 @@ public class JsignerGenerateMojo extends AbstractMojo {
                 throw new MojoExecutionException("error", throwable);
             }
 
-            // StringBuilder builder = new StringBuilder();
-            // for (URL url : urls) {
-            // builder.append(url.toURI().toURL());
-            // builder.append(":");
-            // }
-            // StringBuilder ps = new StringBuilder();
-            // for (File file : projects) {
-            // ps.append(file);
-            // ps.append(":");
-            // }
-            //
-            // Commandline cl = new Commandline("java");
-            // cl.addArguments(new String[] { "-cp", builder.toString(),
-            // Starter.class.getName(), ps.toString() });
-            // StreamConsumer output = new DefaultConsumer();
-            // StreamConsumer error = new DefaultConsumer();
-            // int returnValue = CommandLineUtils.executeCommandLine(cl, null,
-            // output, error);
-            // System.out.println(returnValue);
         } catch (MalformedURLException e) {
             throw new MojoExecutionException("error", e);
         } catch (InterruptedException e) {
@@ -265,4 +290,46 @@ public class JsignerGenerateMojo extends AbstractMojo {
             throw new MojoExecutionException("error", e);
         }
     }
+    
+    private void configurePlugin() {
+		// Methods configuration
+		JsignerConfiguration.setHideEquals(hideEquals);
+		JsignerConfiguration.setHideGetters(hideGetters);
+		JsignerConfiguration.setHideHashcode(hideHashcode);
+		JsignerConfiguration.setHidePrivateMethods(hidePrivateMethods);
+		JsignerConfiguration.setHideSetters(hideSetters);
+
+		// Attribute configuration
+		JsignerConfiguration.setHideSerialVersion(hideSerialVersion);
+
+		// relationship configuration
+		if (discoverMultiplicityByPersistenceAnnotations) {
+			JsignerConfiguration.getLog().debug(
+					"Setting discoverMultiplicityByPersistenceAnnotations to:"
+							+ discoverMultiplicityByPersistenceAnnotations);
+			JsignerConfiguration
+					.setMultiplicityFinder(new PersistenceMultiplicityFinder());
+		} else {
+			JsignerConfiguration
+					.setMultiplicityFinder(new CollectionMultiplicityFinder());
+		}
+	}
+
+	private void checkPreConditions() throws MojoFailureException {
+		JsignerLog log = JsignerConfiguration.getLog();
+
+		if (!outputFolder.exists()) {
+			log.info("outputFolder doesn't exists, trying to create it.");
+			boolean created = outputFolder.mkdirs();
+			if (created) {
+				log.info("OutputFolder created!");
+			} else {
+				throw new RuntimeException("Can't create outputFolder: "+ outputFolder + "!");
+			}
+		}
+		if (!outputFolder.isDirectory()) {
+			throw new MojoFailureException(
+					"Variable outputFolder must be a Directory!");
+		}
+	}
 }

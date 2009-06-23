@@ -41,13 +41,13 @@ public class JsignerRunner implements Runnable, UncaughtExceptionHandler {
 
     private List<File> projects;
 
-    private File dest;
+    private File outputFolder;
 
-    public JsignerRunner(Log log, ClassLoader classloader, List<File> projects, File dest) {
+    public JsignerRunner(Log log, ClassLoader classloader, List<File> projects, File destination) {
         this.log = log;
         this.projects = projects;
-        this.dest = dest;
-        dest.mkdirs();
+        this.outputFolder = destination;
+        destination.mkdirs();
         thread = new Thread(this, "MycontainerRunner");
         thread.setContextClassLoader(classloader);
 
@@ -81,7 +81,7 @@ public class JsignerRunner implements Runnable, UncaughtExceptionHandler {
                 String name = entry.getKey();
                 List<Class<?>> classes = entry.getValue();
                 BufferedImage image = jsigner.design(name, classes);
-                File file = new File(dest, name + ".png");
+                File file = new File(outputFolder, name + ".png");
                 ImageIO.write(image, "png", file);
             }
         } catch (MalformedURLException e) {

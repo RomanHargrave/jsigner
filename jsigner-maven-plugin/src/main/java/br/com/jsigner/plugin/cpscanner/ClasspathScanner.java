@@ -23,75 +23,81 @@ import java.util.List;
 
 public class ClasspathScanner implements ScannerPlugin {
 
-    private final List<ScannerPlugin> plugins = new ArrayList<ScannerPlugin>();
+	private final List<ScannerPlugin> plugins = new ArrayList<ScannerPlugin>();
 
-    private final List<ScannerListener> listeners = new ArrayList<ScannerListener>();
+	private final List<ScannerListener> listeners = new ArrayList<ScannerListener>();
 
-    public ClasspathScanner() {
-        plugins.add(new ZipClasspathPlugin());
-        plugins.add(new DirectoryClasspathPlugin());
-    }
+	public ClasspathScanner() {
+		plugins.add(new ZipClasspathPlugin());
+		plugins.add(new DirectoryClasspathPlugin());
+	}
 
-    public void addListener(ScannerListener listener) {
-        this.listeners.add(listener);
-    }
+	public void addListener(ScannerListener listener) {
+		this.listeners.add(listener);
+	}
 
-    public void scan(Class<?> clazz) {
-        ProtectionDomain pd = clazz.getProtectionDomain();
-        CodeSource cs = pd.getCodeSource();
-        scan(cs.getLocation());
-    }
+	public void scan(Class<?> clazz) {
+		ProtectionDomain pd = clazz.getProtectionDomain();
+		CodeSource cs = pd.getCodeSource();
+		scan(cs.getLocation());
+	}
 
-    public void scan(URL url) {
-        scan(url, url);
-    }
+	public void scan(URL url) {
+		scan(url, url);
+	}
 
-    public void scan(URL base, URL url) {
+	public void scan(URL base, URL url) {
 
-        List<URL> files = listFiles(url);
-        for (URL file : files) {
-            fireEvent(base, file);
-        }
+		List<URL> files = listFiles(url);
+		
+		if (files == null) {
+			return;
+		}
+		
+		for (URL file : files) {
+			fireEvent(base, file);
+		}
 
-        List<URL> dirs = listDirectories(url);
-        for (URL dir : dirs) {
-            scan(base, dir);
-        }
+		List<URL> dirs = listDirectories(url);
+		for (URL dir : dirs) {
+			scan(base, dir);
+		}
 
-    }
+	}
 
-    private void fireEvent(URL base, URL file) {
-        for (ScannerListener listener : listeners) {
-            listener.resourceFound(base, file);
-        }
-    }
+	private void fireEvent(URL base, URL file) {
+		for (ScannerListener listener : listeners) {
+			listener.resourceFound(base, file);
+		}
+	}
 
-    public List<URL> listDirectories(URL directory) {
-        for (ScannerPlugin plugin : plugins) {
-            List<URL> ret = plugin.listDirectories(directory);
-            if (ret != null) {
-                return ret;
-            }
-        }
+	public List<URL> listDirectories(URL directory) {
+		for (ScannerPlugin plugin : plugins) {
+			List<URL> ret = plugin.listDirectories(directory);
+			if (ret != null) {
+				return ret;
+			}
+		}
 
-        throw new RuntimeException("ScannerPlugin not found: " + directory);
-    }
+		throw new RuntimeException("ScannerPlugin not found: " + directory);
+	}
 
-    public List<URL> listFiles(URL directory) {
-        for (ScannerPlugin plugin : plugins) {
-            List<URL> ret = plugin.listFiles(directory);
-            if (ret != null) {
-                return ret;
-            }
-        }
+	public List<URL> listFiles(URL directory) {
+		for (ScannerPlugin plugin : plugins) {
+			List<URL> ret = plugin.listFiles(directory);
+			if (ret != null) {
+				return ret;
+			}
+		}
 
-        throw new RuntimeException("ScannerPlugin not found: " + directory);
-    }
+		return null;
+		// throw new RuntimeException("ScannerPlugin not found: " + directory);
+	}
 
-    public void scan(URL[] urls) {
-        for (URL url : urls) {
-            scan(url);
-        }
-    }
+	public void scan(URL[] urls) {
+		for (URL url : urls) {
+			scan(url);
+		}
+	}
 
 }

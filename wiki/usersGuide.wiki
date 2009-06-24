@@ -84,8 +84,7 @@ Where 'projectVersion' should be replaced by the version that you wish to use.
 </plugin>
 }}}
 
-Where projectVersion should be replaced by the version of the plugin that you wish to use, and outputFolder is the folder that you wish to store the diagrams.
-The jarsFolder is the target where maven store the jars of your project. In a jee example the jarsFolder would be the folder where the maven generates the ".ear"
+Where projectVersion should be replaced by the version of the plugin that you wish to use, and outputFolder is the folder that you wish to store the diagrams. If outputFolder is not provided, jsigner will generate the diagrams at target/jsigner
 
 =Usage=
 

@@ -26,7 +26,6 @@ The following table describes each configuration parameter.
 	<version>1.1</version>
 	<configuration>
 		<outputFolder>/home/rafa/diagramas</outputFolder>
-		<jarsFolder>ecommerce-ear</jarsFolder>
 		<discoverMultiplicityByPersistenceAnnotations>true</discoverMultiplicityByPersistenceAnnotations>
 	</configuration>
 </plugin>

@@ -174,17 +174,8 @@ public class JsignerGenerateMojo extends AbstractMojo {
         List<File> projects = new ArrayList<File>();
         List<File> classpath = getClasspath(projects);
         classpath.addAll(getJsignerDependencies());
-        exec(classpath, projects);
-    }
-
-    private List<File> getJsignerDependencies() {
-        getLog().info("Getting plugin dependencies...");
-        Collection<Artifact> artifacts = pluginArtifactMap.values();
-        List<File> files = getArtifactsClasspath(artifacts);
-        return files;
-    }
-
-    private void exec(List<File> classpath, List<File> projects) throws MojoExecutionException {
+        
+        
         try {
             List<URL> urls = new ArrayList<URL>(classpath.size());
             for (File file : classpath) {
@@ -211,6 +202,13 @@ public class JsignerGenerateMojo extends AbstractMojo {
         } catch (InterruptedException e) {
             throw new MojoExecutionException("error", e);
         }
+    }
+
+    private List<File> getJsignerDependencies() {
+        getLog().info("Getting plugin dependencies...");
+        Collection<Artifact> artifacts = pluginArtifactMap.values();
+        List<File> files = getArtifactsClasspath(artifacts);
+        return files;
     }
 
     @SuppressWarnings("unchecked")

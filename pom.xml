@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.jsigner</groupId>
 	<artifactId>jsigner</artifactId>
-	<version>1.3</version>
+	<version>1.4-SNAPSHOT</version>
 	<name>Jsigner</name>
 	<packaging>pom</packaging>
 	 
@@ -14,9 +14,9 @@
 	</modules>
 	
 	<scm>
-		<connection>scm:svn:http://jsigner.googlecode.com/svn/tags/jsigner-1.3</connection>
-		<developerConnection>scm:svn:https://jsigner.googlecode.com/svn/tags/jsigner-1.3</developerConnection>
-		<url>http://code.google.com/p/jsigner/source/browse/tags/jsigner-1.3</url>
+		<connection>scm:svn:http://jsigner.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://jsigner.googlecode.com/svn/trunk</developerConnection>
+		<url>http://code.google.com/p/jsigner/source/browse</url>
   	</scm>
 
 	<dependencies>

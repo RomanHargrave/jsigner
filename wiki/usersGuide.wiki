@@ -88,7 +88,7 @@ Where projectVersion should be replaced by the version of the plugin that you wi
 
 =Usage=
 
-The plugin is invoked with the `mvn jsigner:generate` command, wich scans the jars in the configured "jarsFolder" recursively, and draw the diagrams to the configured output folder.
+The plugin is invoked with the `mvn jsigner:generate` command, wich scans the jars in the project recursively, and draw the diagrams into the configured output folder.
 
 =Plugin Configuration=
 For more details on plugin configuration see  

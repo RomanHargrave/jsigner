@@ -71,7 +71,7 @@ Automating the class diagrams generation is quite simple, you just use the @Doma
 Where 'projectVersion' should be replaced by the version that you wish to use.
 
 ===4. Declare the jsigner-maven-plugin dependency in your project===
-  You must declare the following plugin in your pom.xml for using the *mvn jsigner:design* command. 
+  You must declare the following plugin in your pom.xml for using the *mvn jsigner:generate* command. 
 
 {{{
 <plugin>

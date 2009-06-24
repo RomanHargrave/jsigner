@@ -3,10 +3,12 @@
   <artifactId>jsigner-maven-plugin</artifactId>
   <version>1.1</version>
   <versioning>
-    <latest>1.1</latest>
+    <latest>1.3</latest>
     <versions>
       <version>1.1</version>
+      <version>1.3-SNAPSHOT</version>
+      <version>1.3</version>
     </versions>
-    <lastUpdated>20080914022018</lastUpdated>
+    <lastUpdated>20090624232413</lastUpdated>
   </versioning>
 </metadata>

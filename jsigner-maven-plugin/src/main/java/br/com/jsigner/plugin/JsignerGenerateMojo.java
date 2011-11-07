@@ -54,78 +54,77 @@ import br.com.jsigner.log.JsignerLog;
  */
 public class JsignerGenerateMojo extends AbstractMojo {
 
-    /**
-     * The Maven project.
-     * 
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
+	/**
+	 * The Maven project.
+	 * 
+	 * @parameter expression="${project}"
+	 * @required
+	 * @readonly
+	 */
+	private MavenProject project;
 
-    /**
-     * The artifact repository to use.
-     * 
-     * @parameter expression="${localRepository}"
-     * @required
-     * @readonly
-     */
-    private ArtifactRepository localRepository;
+	/**
+	 * The artifact repository to use.
+	 * 
+	 * @parameter expression="${localRepository}"
+	 * @required
+	 * @readonly
+	 */
+	private ArtifactRepository localRepository;
 
-    /**
-     * The artifact factory to use.
-     * 
-     * @component
-     * @required
-     * @readonly
-     */
-    private ArtifactFactory artifactFactory;
+	/**
+	 * The artifact factory to use.
+	 * 
+	 * @component
+	 * @required
+	 * @readonly
+	 */
+	private ArtifactFactory artifactFactory;
 
-    /**
-     * The artifact metadata source to use.
-     * 
-     * @component
-     * @required
-     * @readonly
-     */
-    private ArtifactMetadataSource artifactMetadataSource;
+	/**
+	 * The artifact metadata source to use.
+	 * 
+	 * @component
+	 * @required
+	 * @readonly
+	 */
+	private ArtifactMetadataSource artifactMetadataSource;
 
-    /**
-     * The artifact collector to use.
-     * 
-     * @component
-     * @required
-     * @readonly
-     */
-    private ArtifactCollector artifactCollector;
+	/**
+	 * The artifact collector to use.
+	 * 
+	 * @component
+	 * @required
+	 * @readonly
+	 */
+	private ArtifactCollector artifactCollector;
 
-    /**
-     * The dependency tree builder to use.
-     * 
-     * @component
-     * @required
-     * @readonly
-     */
-    private DependencyTreeBuilder dependencyTreeBuilder;
+	/**
+	 * The dependency tree builder to use.
+	 * 
+	 * @component
+	 * @required
+	 * @readonly
+	 */
+	private DependencyTreeBuilder dependencyTreeBuilder;
 
-    /**
-     * @parameter
-     */
-    private Set<String> packs;
+	/**
+	 * @parameter
+	 */
+	private Set<String> packs;
 
+	/**
+	 * Map of of plugin artifacts.
+	 * 
+	 * @parameter expression="${plugin.artifactMap}"
+	 * @required
+	 * @readonly
+	 */
+	private Map<String, Artifact> pluginArtifactMap;
 
-    /**
-     * Map of of plugin artifacts.
-     * 
-     * @parameter expression="${plugin.artifactMap}"
-     * @required
-     * @readonly
-     */
-    private Map<String, Artifact> pluginArtifactMap;
-    
-    /**
-     * @parameter expression="${basedir}/target/jsigner"
-     */
+	/**
+	 * @parameter expression="${basedir}/target/jsigner"
+	 */
 	private File outputFolder;
 
 	/**
@@ -163,133 +162,145 @@ public class JsignerGenerateMojo extends AbstractMojo {
 	 */
 	private boolean hideSerialVersion;
 
-    public JsignerGenerateMojo() {
-        this.packs = new TreeSet<String>(Arrays.asList("jar", "ejb", "war"));
-    }
+	public JsignerGenerateMojo() {
+		this.packs = new TreeSet<String>(Arrays.asList("jar", "ejb", "war"));
+	}
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
-    	checkPreConditions();
+	public void execute() throws MojoExecutionException, MojoFailureException {
+		checkPreConditions();
 		configurePlugin();
-    	
-        List<File> projects = new ArrayList<File>();
-        List<File> classpath = getClasspath(projects);
-        classpath.addAll(getJsignerDependencies());
-        
-        
-        try {
-            List<URL> urls = new ArrayList<URL>(classpath.size());
-            for (File file : classpath) {
-                if (!file.exists()) {
-                    getLog().warn("File not found to isolated classloader: " + file);
-                } else {
-                    urls.add(file.toURI().toURL());
-                }
-            }
 
-            urls = new ArrayList<URL>(new HashSet<URL>(urls));
-            getLog().info("Creating classloader for: " + urls);
-            ClassLoader loader = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]));
-            JsignerRunner runner = new JsignerRunner(getLog(), loader, projects, outputFolder);
-            runner.start();
-            runner.join();
-            Throwable throwable = runner.getThrowable();
-            if (throwable != null) {
-                throw new MojoExecutionException("error", throwable);
-            }
+		List<File> projects = new ArrayList<File>();
+		List<File> classpath = getClasspath(projects);
+		classpath.addAll(getJsignerDependencies());
 
-        } catch (MalformedURLException e) {
-            throw new MojoExecutionException("error", e);
-        } catch (InterruptedException e) {
-            throw new MojoExecutionException("error", e);
-        }
-    }
+		try {
+			List<URL> urls = new ArrayList<URL>(classpath.size());
+			for (File file : classpath) {
+				if (!file.exists()) {
+					getLog().warn(
+							"File not found to isolated classloader: " + file);
+				} else {
+					urls.add(file.toURI().toURL());
+				}
+			}
 
-    private List<File> getJsignerDependencies() {
-        getLog().info("Getting plugin dependencies...");
-        Collection<Artifact> artifacts = pluginArtifactMap.values();
-        List<File> files = getArtifactsClasspath(artifacts);
-        return files;
-    }
+			urls = new ArrayList<URL>(new HashSet<URL>(urls));
+			getLog().info("Creating classloader for: " + urls);
+			ClassLoader loader = URLClassLoader.newInstance(urls
+					.toArray(new URL[urls.size()]));
+			JsignerRunner runner = new JsignerRunner(getLog(), loader,
+					projects, outputFolder);
+			runner.start();
+			runner.join();
+			Throwable throwable = runner.getThrowable();
+			if (throwable != null) {
+				throw new MojoExecutionException("error", throwable);
+			}
 
-    @SuppressWarnings("unchecked")
-    private List<File> getClasspath(List<File> projectFiles) throws MojoExecutionException {
-        Set<Artifact> artifacts = new HashSet<Artifact>();
-        List<MavenProject> collectedProjects = project.getCollectedProjects();
-        Set<MavenProject> projects = new HashSet<MavenProject>();
-        for (MavenProject module : collectedProjects) {
-            if (packs.contains(module.getPackaging())) {
-                projects.add(module);
-                mountClasspath(module, artifacts);
-            }
-        }
-        removeProjects(projects, artifacts);
-        List<File> files = getArtifactsClasspath(artifacts);
-        projectFiles.addAll(getProjectsClasspath(projects));
-        files.addAll(projectFiles);
-        return files;
-    }
+		} catch (MalformedURLException e) {
+			throw new MojoExecutionException("error", e);
+		} catch (InterruptedException e) {
+			throw new MojoExecutionException("error", e);
+		}
+	}
 
-    @SuppressWarnings("unchecked")
-    private List<File> getProjectsClasspath(Set<MavenProject> projects) throws MojoExecutionException {
-        try {
-            List<File> ret = new ArrayList<File>(projects.size());
-            for (MavenProject module : projects) {
-                List<String> elements = module.getCompileClasspathElements();
-                for (String element : elements) {
-                    ret.add(new File(element));
-                }
-            }
-            return ret;
-        } catch (DependencyResolutionRequiredException e) {
-            throw new MojoExecutionException("error", e);
-        }
-    }
+	private List<File> getJsignerDependencies() {
+		getLog().info("Getting plugin dependencies...");
+		Collection<Artifact> artifacts = pluginArtifactMap.values();
+		List<File> files = getArtifactsClasspath(artifacts);
+		return files;
+	}
 
-    private List<File> getArtifactsClasspath(Collection<Artifact> artifacts) {
-        List<File> ret = new ArrayList<File>(artifacts.size());
-        for (Artifact artifact : artifacts) {
-            String path = localRepository.getBasedir() + "/" + localRepository.pathOf(artifact);
-            ret.add(new File(path));
-        }
-        return ret;
-    }
+	@SuppressWarnings("unchecked")
+	private List<File> getClasspath(List<File> projectFiles)
+			throws MojoExecutionException {
+		Set<Artifact> artifacts = new HashSet<Artifact>();
+		List<MavenProject> collectedProjects = project.getCollectedProjects();
+		Set<MavenProject> projects = new HashSet<MavenProject>();
+		getLog().info("Me: " + project);
+		projects.add(project);
+		mountClasspath(project, artifacts);
+		for (MavenProject module : collectedProjects) {
+			if (packs.contains(module.getPackaging())) {
+				getLog().info("Project: " + module);
+				projects.add(module);
+				mountClasspath(module, artifacts);
+			}
+		}
+		removeProjects(projects, artifacts);
+		List<File> files = getArtifactsClasspath(artifacts);
+		projectFiles.addAll(getProjectsClasspath(projects));
+		files.addAll(projectFiles);
+		return files;
+	}
 
-    private void removeProjects(Set<MavenProject> projects, Set<Artifact> artifacts) {
-        for (MavenProject module : projects) {
-            Artifact artifact = module.getArtifact();
-            artifacts.remove(artifact);
-        }
-    }
+	@SuppressWarnings("unchecked")
+	private List<File> getProjectsClasspath(Set<MavenProject> projects)
+			throws MojoExecutionException {
+		try {
+			List<File> ret = new ArrayList<File>(projects.size());
+			for (MavenProject module : projects) {
+				List<String> elements = module.getCompileClasspathElements();
+				for (String element : elements) {
+					ret.add(new File(element));
+				}
+			}
+			return ret;
+		} catch (DependencyResolutionRequiredException e) {
+			throw new MojoExecutionException("error", e);
+		}
+	}
 
-    @SuppressWarnings("unchecked")
-    private void mountClasspath(MavenProject module, Set<Artifact> artifacts) throws MojoExecutionException {
-        try {
-            Artifact artifact = module.getArtifact();
-            getLog().info("Mounting classpath: " + artifact);
-            artifacts.add(artifact);
-            getLog().debug("Dependency: " + artifact);
+	private List<File> getArtifactsClasspath(Collection<Artifact> artifacts) {
+		List<File> ret = new ArrayList<File>(artifacts.size());
+		for (Artifact artifact : artifacts) {
+			String path = localRepository.getBasedir() + "/"
+					+ localRepository.pathOf(artifact);
+			ret.add(new File(path));
+		}
+		return ret;
+	}
 
-            DependencyNode root = dependencyTreeBuilder.buildDependencyTree(module, localRepository, artifactFactory,
-                    artifactMetadataSource, null, artifactCollector);
-            Iterator<DependencyNode> it = root.iterator();
-            while (it.hasNext()) {
-                DependencyNode node = it.next();
-                Artifact dependency = node.getArtifact();
-                if ((Artifact.SCOPE_COMPILE.equals(dependency.getScope()) || Artifact.SCOPE_PROVIDED.equals(dependency
-                        .getScope()))
-                        && packs.contains(dependency.getType())) {
-                    boolean add = artifacts.add(dependency);
-                    if (add) {
-                        getLog().debug("Dependency: " + artifact);
-                    }
-                }
-            }
-        } catch (DependencyTreeBuilderException e) {
-            throw new MojoExecutionException("error", e);
-        }
-    }
-    
-    private void configurePlugin() {
+	private void removeProjects(Set<MavenProject> projects,
+			Set<Artifact> artifacts) {
+		for (MavenProject module : projects) {
+			Artifact artifact = module.getArtifact();
+			artifacts.remove(artifact);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void mountClasspath(MavenProject module, Set<Artifact> artifacts)
+			throws MojoExecutionException {
+		try {
+			Artifact artifact = module.getArtifact();
+			getLog().info("Mounting classpath: " + artifact);
+			artifacts.add(artifact);
+			getLog().debug("Dependency: " + artifact);
+
+			DependencyNode root = dependencyTreeBuilder.buildDependencyTree(
+					module, localRepository, artifactFactory,
+					artifactMetadataSource, null, artifactCollector);
+			Iterator<DependencyNode> it = root.iterator();
+			while (it.hasNext()) {
+				DependencyNode node = it.next();
+				Artifact dependency = node.getArtifact();
+				if ((Artifact.SCOPE_COMPILE.equals(dependency.getScope()) || Artifact.SCOPE_PROVIDED
+						.equals(dependency.getScope()))
+						&& packs.contains(dependency.getType())) {
+					boolean add = artifacts.add(dependency);
+					if (add) {
+						getLog().debug("Dependency: " + artifact);
+					}
+				}
+			}
+		} catch (DependencyTreeBuilderException e) {
+			throw new MojoExecutionException("error", e);
+		}
+	}
+
+	private void configurePlugin() {
 		// Methods configuration
 		JsignerConfiguration.setHideEquals(hideEquals);
 		JsignerConfiguration.setHideGetters(hideGetters);
@@ -322,7 +333,8 @@ public class JsignerGenerateMojo extends AbstractMojo {
 			if (created) {
 				log.info("OutputFolder created!");
 			} else {
-				throw new RuntimeException("Can't create outputFolder: "+ outputFolder + "!");
+				throw new RuntimeException("Can't create outputFolder: "
+						+ outputFolder + "!");
 			}
 		}
 		if (!outputFolder.isDirectory()) {

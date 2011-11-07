@@ -19,7 +19,7 @@ Automating the class diagrams generation is quite simple, you just use the @Doma
   You can configure the repository on the general settings.xml or on the pom.xml of your project.
 
   The url for the repository is: 
-   http://jsigner.googlecode.com/svn/maven2/repository/
+   http://repo.pyrata.org/release/maven2/
 
    ====pom.xml configuration:====
 
@@ -27,15 +27,8 @@ Automating the class diagrams generation is quite simple, you just use the @Doma
 
 {{{
 <repository>
-            <id>jsigner</id>
-            <name>Jsigner maven repository</name>
-            <url>http://jsigner.googlecode.com/svn/maven2/repository</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
+    <id>pyrata</id>
+    <url>http://repo.pyrata.org/release/maven2/</url>
 </repository>
 }}}
 
@@ -45,16 +38,8 @@ Automating the class diagrams generation is quite simple, you just use the @Doma
 
 {{{
 <pluginRepository>
-  <id>jsigner-plugins</id>
-  <name>Jsigner Maven Plugin Repository</name>
-  <url>http://jsigner.googlecode.com/svn/maven2/repository</url>
-  <layout>default</layout>
-  <snapshots>
-    <enabled>true</enabled>
-  </snapshots>
-  <releases>
-    <updatePolicy>never</updatePolicy>
-  </releases>
+    <id>pyrata</id>
+    <url>http://repo.pyrata.org/release/maven2/</url>
 </pluginRepository>
 }}}
 

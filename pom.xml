@@ -8,6 +8,7 @@
 	 
 	<modules>
 		<module>jsigner-annotations</module>
+		<module>jsigner-modsl-core</module>
 		<module>jsigner-core</module>
 		<module>jsigner-maven-plugin</module>
 		<module>jsigner-ui</module>
@@ -49,6 +50,7 @@
 		</dependency>
 	</dependencies>
 
+	<!--
 	<repositories>
 		<repository>
             <id>jsigner</id>
@@ -59,7 +61,6 @@
             </snapshots>
 		</repository>
 	</repositories>
-	<!--
 	<pluginRepositories>
         <pluginRepository>
             <id>mc-release</id>

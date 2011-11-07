@@ -1,0 +1,7 @@
+group sub : super;
+
+keyValue(key,value) ::= "<key>.<value>"
+
+@regionOuter.regionInner() ::= "///<string>///"
+
+unique(string) ::= <<<string>_unique>>

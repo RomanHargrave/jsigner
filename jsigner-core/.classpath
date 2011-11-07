@@ -12,11 +12,11 @@
   <classpathentry kind="var" path="M2_REPO/org/jmock/jmock/2.4.0/jmock-2.4.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/jmock/jmock-junit4/2.4.0/jmock-junit4-2.4.0.jar"/>
   <classpathentry kind="src" path="/jsigner-annotations"/>
+  <classpathentry kind="src" path="/jsigner-modsl-core"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit/4.0/junit-4.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit-dep/4.4/junit-dep-4.4.jar"/>
   <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.14/log4j-1.2.14.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/modsl/modsl-jsigner-core/0.6.2/modsl-jsigner-core-0.6.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/scannotation/scannotation/1.0.2/scannotation-1.0.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/antlr/stringtemplate/3.1/stringtemplate-3.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/antlr/stringtemplate/3.2/stringtemplate-3.2.jar"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 </classpath>

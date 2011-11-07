@@ -3,14 +3,14 @@
 
 	<groupId>br.com.jsigner</groupId>
 	<artifactId>jsigner-core</artifactId>
-	<version>1.4.2-SNAPSHOT</version>
+	<version>1.4.2</version>
 	<name>Jsigner Core</name>
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>br.com.jsigner</groupId>
 		<artifactId>jsigner</artifactId>
-	<version>1.4.2-SNAPSHOT</version>
+	<version>1.4.2</version>
 	</parent>
 
 
@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>br.com.jsigner</groupId>
 			<artifactId>jsigner-annotations</artifactId>
-			<version>1.4.2-SNAPSHOT</version>
+			<version>1.4.2</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.scannotation</groupId>

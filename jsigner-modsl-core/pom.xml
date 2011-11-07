@@ -4,14 +4,14 @@
     <groupId>br.com.jsigner.repackage.org.modsl</groupId>
     <artifactId>jsigner-modsl-core</artifactId>
     <packaging>jar</packaging>
-    <version>1.4.2</version>
+    <version>1.4.3-SNAPSHOT</version>
     <name>jsigner-modsl-core</name>
     <url>http://www.modsl.org</url>
 
 	<parent>
 		<groupId>br.com.jsigner</groupId>
 		<artifactId>jsigner</artifactId>
-	<version>1.4.2</version>
+	<version>1.4.3-SNAPSHOT</version>
 	</parent>
 
 	<!--

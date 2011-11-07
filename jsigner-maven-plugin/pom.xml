@@ -4,21 +4,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.jsigner</groupId>
 	<artifactId>jsigner-maven-plugin</artifactId>
-	<version>1.5-SNAPSHOT</version>
+	<version>1.4.1</version>
 	<name>JSingner Maven Plugin</name>
 	<packaging>maven-plugin</packaging>
 
 	<parent>
 		<groupId>br.com.jsigner</groupId>
 		<artifactId>jsigner</artifactId>
-		<version>1.5-SNAPSHOT</version>
+		<version>1.4.1</version>
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>br.com.jsigner</groupId>
 			<artifactId>jsigner-core</artifactId>
-			<version>1.5-SNAPSHOT</version>
+			<version>1.4.1</version>
 		</dependency>
 
 		<dependency>

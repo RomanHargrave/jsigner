@@ -1,0 +1,18 @@
+// Collaboration diagram example
+collaboration ModSL3 { 
+	processor->lexer.tokenStream(); 
+	processor->parser.graph(tokenStream); 
+	processor->nodeLayoutVisitor.accept(graph);
+	processor->sugiyamaLayoutVisitor.accept(graph);
+	sugiyamaLayoutVisitor->node.setPos();
+	processor->labelLayoutVisitor.accept(graph);
+	processor->stringTemplateVisitor.accept(graph);
+	stringTemplateVisitor->decorators.apply();
+	stringTemplateVisitor->stringTemplate.toString();
+	stringTemplate->graph.visit();
+	graph->node.visit();
+	node->nodeLabel.visit();
+	graph->edge.visit();
+	edge->bend.visit();
+	edge->edgeLabel.visit();
+}

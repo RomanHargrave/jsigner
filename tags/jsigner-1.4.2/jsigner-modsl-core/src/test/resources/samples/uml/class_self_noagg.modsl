@@ -1,0 +1,75 @@
+/*
+ Class diagram example
+ */
+class diagram self_na {
+	class AbstractElement {
+		name; parent; type; index;
+		AbstractElement();
+		AbstractElement(MetaType);
+		AbstractElement(MetaType, String);
+		accept(AbstractVisitor);
+		getIndex();
+		getMeta();
+		getName();
+		getParent();
+		getType();
+		isVirtual();
+		setIndex(int);
+		setName(String);
+		setParent(P);
+		setType(MetaType);
+		toString();	
+	} 
+	class AbstractBox extends AbstractElement {
+		pos; disp; size;
+		AbstractBox();
+		AbstractBox(MetaType);
+		AbstractBox(MetaType, String);
+		angle(AbstractBox);
+		contains(Pt);
+		cos();
+		cos(AbstractBox);
+		getCtrDelta(AbstractBox);
+		getCtrPos();
+		getDisp();
+		getPort(double, double, double);
+		getPortDelta(AbstractBox);
+		getPorts(AbstractBox);
+		getPos();
+		getSize();
+		getWeight();
+		isConnectedTo(AbstractBox);
+		overlaps(AbstractBox);
+		setDisp(double, double);
+		setPos(double, double);
+		setSize(double, double);
+		setWeight(double);
+		sin();
+		sin(AbstractBox);
+		tan();
+		tan(AbstractBox);
+		toString();
+	}
+	class Edge extends AbstractElement {
+		labels; nodes; bends;
+	}
+	class Bend extends AbstractBox {
+	}
+	class Graph extends AbstractBox {
+		reqSize; nodes; edges; labels;
+	}
+	class Label extends AbstractBox {
+	}
+	class EdgeLabel extends Label {
+		anchor1; anchor2; offset;
+	}
+	class NodeLabel extends Label {
+		offset;
+	}
+	class GraphLabel extends Label {
+		offset;
+	}
+	class Node extends AbstractBox {
+		connectedEdges; labels; 
+	}
+}

@@ -1,0 +1,31 @@
+group visitor_demo;
+
+GRAPH_in(graph,decor) ::= <<
+
+<graph name="$graph.name$">
+
+>>
+
+NODE_in(node,decor) ::= <<
+<node name="$node.name$">
+
+>>
+
+NODE_out(node,decor) ::= <<
+</node>
+
+>>
+
+EDGE_in(edge,decor) ::= <<
+<edge name="$edge.name$">
+>>
+
+EDGE_out(edge,decor) ::= <<
+</edge>
+
+>>
+
+GRAPH_out(graph,decor) ::= <<
+</graph>
+
+>>

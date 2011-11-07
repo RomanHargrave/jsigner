@@ -1,0 +1,10 @@
+collaboration sample2 { 
+	Main->Lexer.tokenize();
+	Main->Parser.parse();
+	Main->GraphLayout.apply();
+	GraphLayout->SugiyamaLayout.apply();
+	GraphLayout->NodeLabelLayout.apply();
+	GraphLayout->EdgeLabelLayout.apply();
+	Main->RenderVisitor.apply(graph); 
+	RenderVisitor->Graph.visit();
+}

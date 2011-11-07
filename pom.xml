@@ -49,20 +49,17 @@
 		</dependency>
 	</dependencies>
 
-	<!--
 	<repositories>
 		<repository>
             <id>jsigner</id>
             <name>JSIGNER MAVEN2 REPOSITORY</name>
             <url>http://jsigner.googlecode.com/svn/maven2/repository</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
 		</repository>
 	</repositories>
+	<!--
 	<pluginRepositories>
         <pluginRepository>
             <id>mc-release</id>

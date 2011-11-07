@@ -12,7 +12,22 @@
 		<module>jsigner-maven-plugin</module>
 		<module>jsigner-ui</module>
 	</modules>
-	
+
+	<distributionManagement>
+		<repository>
+			<id>fuweweu</id>
+			<name>Fuweweu Release Repository</name>
+			<url>dav:http://repo.pyrata.org/release/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>fuweweu</id>
+			<uniqueVersion>false</uniqueVersion>
+			<name>Fuweweu Snapshot Repository</name>
+			<url>dav:http://repo.pyrata.org/snapshot/maven2</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
 	<scm>
 		<connection>scm:svn:http://jsigner.googlecode.com/svn/trunk</connection>
 		<developerConnection>scm:svn:https://jsigner.googlecode.com/svn/trunk</developerConnection>
@@ -34,6 +49,7 @@
 		</dependency>
 	</dependencies>
 
+	<!--
 	<repositories>
 		<repository>
             <id>jsigner</id>
@@ -47,7 +63,6 @@
             </snapshots>
 		</repository>
 	</repositories>
-
 	<pluginRepositories>
         <pluginRepository>
             <id>mc-release</id>
@@ -60,6 +75,7 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
+    -->
 
 	<build>
 		<plugins>
@@ -71,6 +87,7 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
+			<!--
 			<plugin>
 				<groupId>com.google.code.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
@@ -93,6 +110,7 @@
 					    </execution>
 				    </executions>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 </project>
